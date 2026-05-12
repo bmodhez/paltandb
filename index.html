@@ -75,6 +75,18 @@ body{font-family:'DM Sans',sans-serif;background:#f9fafb;color:#111827;-webkit-f
 .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:199;opacity:0;pointer-events:none;transition:opacity .3s}
 .drawer-overlay.open{opacity:1;pointer-events:all}
 
+/* ─ Mobile sidebar ─ */
+.mnav-btn{width:42px;height:42px;border-radius:12px;border:1.5px solid #e5e7eb;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.mnav-btn .bars{display:flex;flex-direction:column;gap:4px}
+.mnav-btn .bar{width:18px;height:2px;background:#111827;border-radius:2px}
+.mnav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:210;opacity:0;pointer-events:none;transition:opacity .3s}
+.mnav-overlay.open{opacity:1;pointer-events:all}
+.mnav{position:fixed;top:0;left:0;height:100vh;width:280px;max-width:80vw;background:#fff;z-index:211;transform:translateX(-110%);transition:transform .4s cubic-bezier(.16,1,.3,1);box-shadow:12px 0 40px rgba(0,0,0,.14);display:flex;flex-direction:column}
+.mnav.open{transform:translateX(0)}
+.mnav a{text-decoration:none;color:#374151}
+.mnav-link{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:600;transition:background .15s}
+.mnav-link:hover{background:#f9fafb}
+
 /* ─ Modal ─ */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 .modal{background:#fff;border-radius:28px;width:100%;max-width:460px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.2)}
@@ -142,20 +154,47 @@ body{font-family:'DM Sans',sans-serif;background:#f9fafb;color:#111827;-webkit-f
   .footer-grid{grid-template-columns:1.5fr 1fr 1fr !important}
 }
 @media(max-width:768px){
-  .nav-row{gap:10px}
-  .nav-actions{flex-wrap:wrap}
-  .nav-actions > button{flex:1}
-  .nav-actions .cart-btn{flex:1 1 100%}
+  .nav-row{display:grid;grid-template-columns:1fr auto;gap:10px}
+  .nav-actions{flex-wrap:nowrap;gap:8px;overflow-x:auto;overflow-y:hidden}
+  .nav-actions > button{flex:0 0 auto}
+  .nav-actions .cart-btn{flex:0 0 auto}
+  .mnav-btn{display:flex}
+  .navbar > div{padding:0 16px !important}
+  .nav-row{padding:10px 0 !important}
+  .nav-logo .font-syne{font-size:20px !important}
+  .nav-logo div:last-child{font-size:8px !important;letter-spacing:0.2em !important}
+  .nav-loc button{padding:7px 10px !important}
+  .nav-loc button div:last-child{font-size:11px !important}
+  .search-box{padding:9px 12px !important}
+  .search-box button{padding:6px 12px !important;font-size:12px !important}
+  .nav-search{grid-column:1 / -1}
+  .nav-actions{grid-column:1 / -1;justify-content:flex-start}
+  .nav-loc{justify-self:end}
+  .cart-text{display:none}
+  .prof-text{display:none}
+  .cart-btn{padding:8px 12px !important}
+  .nav-actions button{height:38px !important}
+  .nav-actions > :not(.mnav-btn){display:none}
+  .cart-btn{display:none !important}
+  .cat-scroll{display:none}
+  .nav-loc .deliver-label{display:none}
+  .nav-loc button{max-width:180px}
   .hero-title{font-size:42px !important}
   .hero-sub{font-size:15px !important}
   .hero-cta{flex-direction:column;align-items:flex-start}
   .hero-cta .hero-badges{flex-direction:row;flex-wrap:wrap}
-  .hero-stats > div{flex:1 1 50%}
+  .hero-stats{display:grid !important;grid-template-columns:repeat(2,1fr);gap:12px}
+  .hero-stats > div{flex:1 1 50%;border-right:0 !important;padding-right:0 !important;padding-left:0 !important;text-align:center}
+  .stat-num{font-size:22px !important;line-height:1.1}
+  .stat-label{font-size:11px !important;line-height:1.3}
   .offer-grid{grid-template-columns:1fr 1fr !important}
   .promo-grid{grid-template-columns:1fr 1fr !important}
   .wide-banner{flex-direction:column;gap:18px}
   .wide-banner span{font-size:80px !important}
   .footer-grid{grid-template-columns:1fr 1fr !important;gap:24px !important}
+  .announce-bar{padding:6px 0 !important}
+  main{padding-top:20px !important}
+  .hero-section{margin-bottom:24px !important}
 }
 @media(max-width:640px){
   /* make hero padding smaller */
@@ -165,6 +204,16 @@ body{font-family:'DM Sans',sans-serif;background:#f9fafb;color:#111827;-webkit-f
     .nav-actions{gap:6px}
     .nav-actions > button{flex:1}
     .nav-actions .cart-btn{flex:1 1 100%;justify-content:center}
+  .navbar > div{padding:0 12px !important}
+  .nav-row{padding:8px 0 !important}
+  .nav-logo{gap:8px !important}
+  .nav-logo .font-syne{font-size:18px !important}
+  .nav-logo div:last-child{font-size:7px !important;letter-spacing:0.18em !important}
+  .nav-loc button{padding:6px 10px !important}
+  .nav-actions button{height:38px !important}
+  .cart-btn{padding:8px 12px !important}
+  .search-box{padding:8px 10px !important}
+  .search-box input{font-size:13px !important}
     .hero-title{font-size:36px !important}
     .hero-sub{font-size:14px !important}
     .hero-cta{flex-direction:column;align-items:flex-start}
@@ -175,6 +224,12 @@ body{font-family:'DM Sans',sans-serif;background:#f9fafb;color:#111827;-webkit-f
     .wide-banner span{font-size:72px !important}
     .footer-grid{grid-template-columns:1fr !important;gap:24px !important}
     .footer-bottom{flex-direction:column;gap:10px;align-items:flex-start !important}
+  .announce-bar span{font-size:12px !important;line-height:1.4}
+  .hero-section{margin-bottom:20px !important}
+  .hero-stats{margin-top:20px !important;padding-top:18px !important}
+}
+@media(min-width:769px){
+  .mnav-btn{display:none}
 }
 @media(max-width:414px){
   .hero-section{border-radius:20px}
@@ -188,6 +243,9 @@ body{font-family:'DM Sans',sans-serif;background:#f9fafb;color:#111827;-webkit-f
   .pcard{border-radius:16px}
   .pcard-img{height:120px !important}
   .add-btn{padding:6px 10px}
+  .hero-section{padding:20px !important}
+  .hero-stats{display:none}
+  .hero-cta{gap:10px}
 }
 @media(max-width:420px){
   .cpill{font-size:12px}
@@ -208,6 +266,7 @@ body{font-family:'DM Sans',sans-serif;background:#f9fafb;color:#111827;-webkit-f
   .pcard{border-radius:14px}
   .pcard-img{height:110px !important}
   .drawer{padding-bottom:8px}
+  .announce-bar span{font-size:11px !important}
 }
 
 /* Toast */
@@ -577,6 +636,7 @@ function App() {
   const [notifs, setNotifs] = useState(NOTIFICATIONS);
   const [wishlist, setWishlist] = useState({});
   const [showSugg, setShowSugg] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const searchRef = useRef();
 
   const cartCount = useMemo(() => Object.values(cart).reduce((s,q)=>s+q,0), [cart]);
@@ -607,6 +667,7 @@ function App() {
   },[]);
 
   const logout = () => { setUser(null); setShowProf(false); showToast('Logged out successfully'); };
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <div style={{minHeight:'100vh',background:'#f9fafb'}}>
@@ -637,7 +698,7 @@ function App() {
               <button onClick={()=>{setShowLoc(s=>!s);setShowNotif(false);setShowProf(false);}} style={{display:'flex',alignItems:'center',gap:8,border:'1.5px solid #e5e7eb',borderRadius:12,padding:'9px 14px',background:'#fff',cursor:'pointer',transition:'all .2s',fontFamily:'DM Sans'}} onMouseEnter={e=>e.currentTarget.style.borderColor='#16a34a'} onMouseLeave={e=>{ if(!showLoc) e.currentTarget.style.borderColor='#e5e7eb'}}>
                 <Ic d={icons.pin} size={14} cls="" stroke="#16a34a" fill="#16a34a"/>
                 <div style={{textAlign:'left'}}>
-                  <div style={{fontSize:9,color:'#9ca3af',fontWeight:600,textTransform:'uppercase',letterSpacing:'0.05em'}}>Deliver to</div>
+                  <div className="deliver-label" style={{fontSize:9,color:'#9ca3af',fontWeight:600,textTransform:'uppercase',letterSpacing:'0.05em'}}>Deliver to</div>
                   <div style={{fontSize:12,fontWeight:700,color:'#111827',maxWidth:140,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{location}</div>
                 </div>
                 <Ic d={icons.chevD} size={14} stroke="#9ca3af"/>
@@ -685,6 +746,14 @@ function App() {
 
             {/* Right icons */}
             <div className="nav-actions" style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
+              {/* Mobile menu */}
+              <button className="mnav-btn" onClick={()=>setMenuOpen(true)} aria-label="Open menu">
+                <span className="bars">
+                  <span className="bar"></span>
+                  <span className="bar"></span>
+                  <span className="bar"></span>
+                </span>
+              </button>
               {/* Notifications */}
               <div style={{position:'relative'}} onClick={e=>e.stopPropagation()}>
                 <button onClick={()=>{setShowNotif(s=>!s);setShowLoc(false);setShowProf(false);if(unread)setNotifs(n=>n.map(x=>({...x,unread:false})));}} style={{width:42,height:42,borderRadius:12,border:'1.5px solid #e5e7eb',background:'#fff',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}} onMouseEnter={e=>e.currentTarget.style.borderColor='#16a34a'} onMouseLeave={e=>{ if(!showNotif) e.currentTarget.style.borderColor='#e5e7eb'}}>
@@ -715,7 +784,7 @@ function App() {
               {/* Cart */}
               <button className="cart-btn" onClick={()=>{setCartOpen(true);}} style={{display:'flex',alignItems:'center',gap:10,background:'linear-gradient(135deg,#15803d,#22c55e)',color:'#fff',border:'none',borderRadius:14,padding:'10px 18px',cursor:'pointer',position:'relative',boxShadow:'0 4px 14px rgba(22,163,74,.35)',transition:'all .2s',fontFamily:'DM Sans'}} onMouseEnter={e=>e.currentTarget.style.boxShadow='0 8px 24px rgba(22,163,74,.45)'} onMouseLeave={e=>e.currentTarget.style.boxShadow='0 4px 14px rgba(22,163,74,.35)'}>
                 <Ic d={icons.cart} size={18} stroke="#fff"/>
-                <div style={{textAlign:'left'}}>
+                <div className="cart-text" style={{textAlign:'left'}}>
                   <div style={{fontSize:9,fontWeight:600,opacity:.8,letterSpacing:'0.05em'}}>MY KART</div>
                   <div style={{fontSize:14,fontWeight:800}}>{cartCount>0?`₹${cartTotal}`:'Empty'}</div>
                 </div>
@@ -730,7 +799,7 @@ function App() {
                       {user.name[0].toUpperCase()}
                     </div>
                   ) : <Ic d={icons.user} size={18}/>}
-                  <div style={{textAlign:'left'}}>
+                  <div className="prof-text" style={{textAlign:'left'}}>
                     <div style={{fontSize:9,color:'#9ca3af',fontWeight:600,textTransform:'uppercase',letterSpacing:'0.05em'}}>{user?'Account':'Profile'}</div>
                     <div style={{fontSize:12,fontWeight:700,color:'#111827'}}>{user?user.name.split(' ')[0]:'Login'}</div>
                   </div>
@@ -845,8 +914,8 @@ function App() {
               <div className="hero-stats" style={{position:'relative',zIndex:2,display:'flex',gap:0,marginTop:40,borderTop:'1px solid rgba(255,255,255,.12)',paddingTop:28}}>
                 {[['5000+','Products'],['~10 min','Delivery Time'],['₹299','Free delivery above'],['24/7','Customer Support']].map(([n,l],i)=>(
                   <div key={l} style={{flex:1,paddingRight:24,borderRight:i<3?'1px solid rgba(255,255,255,.12)':'0',paddingLeft:i>0?24:0}}>
-                    <div className="font-syne" style={{color:'#86efac',fontSize:28,fontWeight:800}}>{n}</div>
-                    <div style={{color:'rgba(255,255,255,.6)',fontSize:13,marginTop:3}}>{l}</div>
+                    <div className="font-syne stat-num" style={{color:'#86efac',fontSize:28,fontWeight:800}}>{n}</div>
+                    <div className="stat-label" style={{color:'rgba(255,255,255,.6)',fontSize:13,marginTop:3}}>{l}</div>
                   </div>
                 ))}
               </div>
@@ -1011,6 +1080,39 @@ function App() {
           </div>
         </div>
       </footer>
+
+      {/* ── Mobile sidebar ── */}
+      <div className={`mnav-overlay ${menuOpen?'open':''}`} onClick={closeMenu}/>
+      <aside className={`mnav ${menuOpen?'open':''}`}>
+        <div style={{padding:'18px 16px',borderBottom:'1px solid #f3f4f6',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+          <div style={{display:'flex',alignItems:'center',gap:8}}>
+            <div style={{width:28,height:28,background:'linear-gradient(135deg,#15803d,#22c55e)',borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',fontSize:14}}>🌿</div>
+            <div className="font-syne" style={{fontSize:16,fontWeight:800,color:'#15803d'}}>Paltan</div>
+          </div>
+          <button onClick={closeMenu} style={{width:32,height:32,borderRadius:'50%',border:'none',background:'#f3f4f6',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}} aria-label="Close menu">
+            <Ic d={icons.x} size={14}/>
+          </button>
+        </div>
+        <div style={{padding:'14px 12px',display:'flex',flexDirection:'column',gap:8,overflowY:'auto'}}>
+          <div className="mnav-link" onClick={()=>{setActiveCat('all');setSearch('');closeMenu();}}>🏠 Home</div>
+          <div className="mnav-link" onClick={()=>{setCartOpen(true);closeMenu();}}>🛒 My Cart</div>
+          <div className="mnav-link" onClick={()=>{user?showToast('Opening orders...'):(setLoginOpen(true));closeMenu();}}>📦 My Orders</div>
+          <div className="mnav-link" onClick={()=>{user?showToast('Opening wishlist...'):(setLoginOpen(true));closeMenu();}}>❤️ Wishlist</div>
+          <div style={{height:1,background:'#f3f4f6',margin:'6px 4px'}}></div>
+          <div style={{fontSize:11,color:'#9ca3af',fontWeight:700,letterSpacing:'0.08em',textTransform:'uppercase',padding:'4px 8px'}}>Categories</div>
+          {CATEGORIES.filter(c=>c.id!=='all').map(c=>(
+            <div key={c.id} className="mnav-link" onClick={()=>{setActiveCat(c.id);setSearch('');closeMenu();}}>
+              <span>{c.icon}</span>{c.label}
+            </div>
+          ))}
+          <div style={{height:1,background:'#f3f4f6',margin:'6px 4px'}}></div>
+          {!user ? (
+            <button onClick={()=>{setLoginOpen(true);closeMenu();}} style={{width:'100%',padding:'10px 12px',background:'#16a34a',color:'#fff',border:'none',borderRadius:10,fontSize:13,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer'}}>Login / Sign Up</button>
+          ) : (
+            <button onClick={()=>{logout();closeMenu();}} style={{width:'100%',padding:'10px 12px',background:'#fee2e2',color:'#b91c1c',border:'none',borderRadius:10,fontSize:13,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer'}}>Sign Out</button>
+          )}
+        </div>
+      </aside>
 
       {/* ── Modals & Drawers ── */}
       <CartDrawer open={cartOpen} onClose={()=>setCartOpen(false)} cart={cart} onUpdate={updateCart} user={user} onLoginRequest={()=>setLoginOpen(true)}/>
