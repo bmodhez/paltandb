@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Paltan — Delivery in Minutes | Aurangabad</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:#f9fafb;color:#111827;-webkit-font-smoothing:antialiased}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:#f3f4f6}
+::-webkit-scrollbar-thumb{background:#16a34a;border-radius:4px}
+
+/* ─ Fonts ─ */
+.font-syne{font-family:'Syne',sans-serif}
+.font-serif{font-family:'DM Serif Display',serif}
+
+/* ─ Top announcement bar ─ */
+.announce-bar{background:linear-gradient(90deg,#14532d,#15803d,#16a34a,#15803d,#14532d);background-size:300% 100%;animation:shift 6s linear infinite}
+@keyframes shift{0%{background-position:100% 0}100%{background-position:-100% 0}}
+
+/* ─ Navbar ─ */
+.navbar{background:rgba(255,255,255,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:90}
+
+/* ─ Search ─ */
+.search-box{background:#f3f4f6;border:2px solid transparent;border-radius:14px;transition:all .25s}
+.search-box:focus-within{background:#fff;border-color:#16a34a;box-shadow:0 0 0 4px rgba(22,163,74,.1)}
+
+/* ─ Hero ─ */
+.hero-section{background-image:linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('./hero.jpeg');background-size:cover;background-position:center;position:relative;overflow:hidden;background-color:#052e16}
+.hero-section::after{content:'';position:absolute;inset:0;background:linear-gradient(to right, rgba(0,0,0,0.7) 0%, transparent 100%);z-index:1;pointer-events:none}
+.hero-dots{background-image:radial-gradient(rgba(255,255,255,.12) 1px,transparent 1px);background-size:28px 28px}
+
+/* ─ Category pills ─ */
+.cat-scroll{overflow-x:auto;scrollbar-width:none}
+.cat-scroll::-webkit-scrollbar{display:none}
+.cpill{border-radius:100px;border:1.5px solid #e5e7eb;background:#fff;color:#374151;font-size:13px;font-weight:600;transition:all .2s;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.cpill:hover{border-color:#16a34a;color:#16a34a;background:#f0fdf4}
+.cpill.active{background:#16a34a;color:#fff;border-color:#16a34a;box-shadow:0 4px 14px rgba(22,163,74,.35)}
+
+/* ─ Product card ─ */
+.pcard{background:#fff;border-radius:20px;border:1.5px solid #f3f4f6;transition:all .3s cubic-bezier(.34,1.56,.64,1);overflow:hidden;display:flex;flex-direction:column}
+.pcard:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(0,0,0,.11);border-color:#e5e7eb}
+.pcard-img{background:linear-gradient(135deg,#f9fafb,#f3f4f6);transition:background .3s}
+.pcard:hover .pcard-img{background:linear-gradient(135deg,#f0fdf4,#dcfce7)}
+.add-btn{border:2px solid #16a34a;color:#16a34a;background:#fff;border-radius:10px;font-weight:700;font-size:13px;transition:all .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
+.add-btn:hover{background:#16a34a;color:#fff;box-shadow:0 4px 12px rgba(22,163,74,.35)}
+.qty-box{background:#16a34a;border-radius:10px;display:flex;align-items:center;gap:8px;padding:5px 10px}
+.qty-btn{color:#fff;font-weight:800;font-size:16px;cursor:pointer;line-height:1;width:18px;text-align:center;background:none;border:none}
+.qty-num{color:#fff;font-weight:700;font-size:14px;min-width:18px;text-align:center}
+
+/* ─ Tags ─ */
+.tag{font-size:10px;font-weight:700;border-radius:100px;padding:3px 9px}
+.tag-new{background:#d1fae5;color:#065f46}
+.tag-hot{background:#fee2e2;color:#991b1b}
+.tag-sale{background:#fef3c7;color:#92400e}
+.tag-best{background:#ede9fe;color:#5b21b6}
+
+/* ─ Offer cards ─ */
+.offer-card{border-radius:20px;border:1.5px solid;transition:all .3s}
+.offer-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.1)}
+
+/* ─ Cart drawer ─ */
+.drawer{position:fixed;top:0;right:0;height:100vh;width:400px;background:#fff;box-shadow:-12px 0 48px rgba(0,0,0,.14);z-index:200;transform:translateX(110%);transition:transform .4s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column}
+.drawer.open{transform:translateX(0)}
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:199;opacity:0;pointer-events:none;transition:opacity .3s}
+.drawer-overlay.open{opacity:1;pointer-events:all}
+
+/* ─ Modal ─ */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal{background:#fff;border-radius:28px;width:100%;max-width:460px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.2)}
+
+/* ─ Location dropdown ─ */
+.loc-drop{position:absolute;top:calc(100% + 8px);left:0;background:#fff;border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.14);border:1.5px solid #e5e7eb;min-width:280px;z-index:100}
+
+/* ─ Notification panel ─ */
+.notif-panel{position:absolute;top:calc(100% + 8px);right:0;background:#fff;border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.14);border:1.5px solid #e5e7eb;width:320px;z-index:100}
+
+/* ─ Profile dropdown ─ */
+.prof-drop{position:absolute;top:calc(100% + 8px);right:0;background:#fff;border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.14);border:1.5px solid #e5e7eb;width:220px;z-index:100;overflow:hidden}
+
+/* ─ Section underline ─ */
+.sec-line{display:inline-block}
+.sec-line::after{content:'';display:block;width:36px;height:3px;background:linear-gradient(90deg,#16a34a,#86efac);border-radius:2px;margin-top:5px}
+
+/* ─ Banner ─ */
+.promo-card{border-radius:24px;overflow:hidden;position:relative;transition:transform .3s}
+.promo-card:hover{transform:scale(1.015)}
+
+/* ─ Pulse dot ─ */
+@keyframes pdot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.6}}
+.pdot{animation:pdot 1.8s ease infinite}
+
+/* ─ Fade up ─ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fadeUp .5s ease both}
+.fu1{animation-delay:.05s}.fu2{animation-delay:.1s}.fu3{animation-delay:.15s}.fu4{animation-delay:.2s}.fu5{animation-delay:.25s}.fu6{animation-delay:.3s}
+
+/* ─ Coupon dashed ─ */
+.coupon-box{border:2px dashed #16a34a;border-radius:12px;background:#f0fdf4}
+
+/* ─ Footer ─ */
+.footer-bg{background:#0a0a0a}
+
+/* ─ Discount badge ─ */
+.disc{background:#16a34a;color:#fff;font-size:10px;font-weight:800;border-radius:100px;padding:2px 8px}
+
+/* ─ Search suggestions ─ */
+.suggestions{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.12);border:1.5px solid #e5e7eb;z-index:50;overflow:hidden}
+.sugg-item:hover{background:#f0fdf4}
+
+/* ─ Grid ─ */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px}
+@media(max-width:900px){.pgrid{grid-template-columns:repeat(2,1fr);gap:12px}}
+@media(max-width:500px){.pgrid{grid-template-columns:repeat(2,1fr);gap:10px}}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#111827;color:#fff;padding:12px 24px;border-radius:100px;font-size:14px;font-weight:600;z-index:999;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s;opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div class="toast" id="toast"></div>
+
+<script type="text/babel">
+const {useState, useEffect, useRef, useCallback, useMemo} = React;
+
+/* ════ TOAST ════ */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ════ DATA ════ */
+const LOCATIONS = ['Station Road, 431001','Cidco Colony, 431003','Garkheda, 431009','Osmanpura, 431005','Cantonment Area, 431002','Waluj, 431136'];
+
+const CATEGORIES = [
+  {id:'all',label:'All',icon:'🛒'},
+  {id:'snacks',label:'Snacks & Drinks',icon:'🍿'},
+  {id:'grocery',label:'Grocery & Home',icon:'🏠'},
+  {id:'dairy',label:'Dairy & Eggs',icon:'🥛'},
+  {id:'fruits',label:'Fruits & Vegs',icon:'🥦'},
+  {id:'bakery',label:'Bakery',icon:'🍞'},
+  {id:'personal',label:'Personal Care',icon:'🧴'},
+  {id:'cleaning',label:'Cleaning',icon:'🧹'},
+  {id:'baby',label:'Baby Care',icon:'👶'},
+  {id:'beverages',label:'Beverages',icon:'☕'},
+  {id:'instant',label:'Instant Food',icon:'🍜'},
+  {id:'frozen',label:'Frozen',icon:'❄️'},
+];
+
+const PRODUCTS = [
+  {id:1,  name:'Aashirvaad Shudh Chakki Atta',brand:'ITC',        weight:'10 kg', price:340,mrp:380,img:'🌾',cat:'grocery',  tag:'sale',rating:4.5,reviews:1240},
+  {id:2,  name:'Aashirvaad Shudh Chakki Atta',brand:'ITC',        weight:'5 kg',  price:185,mrp:210,img:'🌾',cat:'grocery',  tag:'',   rating:4.4,reviews:890},
+  {id:3,  name:"Kellogg's Corn Flakes Original",brand:"Kellogg's",weight:'875 g', price:299,mrp:350,img:'🥣',cat:'snacks',   tag:'hot',rating:4.6,reviews:2100},
+  {id:4,  name:'Kurkure Masala Munch Pack of 3',brand:'PepsiCo',  weight:'3×26 g',price:45, mrp:60, img:'🍿',cat:'snacks',   tag:'hot',rating:4.3,reviews:3400},
+  {id:5,  name:"Lay's Classic Salted Chips",   brand:'PepsiCo',   weight:'52 g',  price:20, mrp:20, img:'🥔',cat:'snacks',   tag:'',   rating:4.2,reviews:5600},
+  {id:6,  name:"Haldiram's Bhujia Sev",        brand:"Haldiram's",weight:'400 g', price:89, mrp:110,img:'🫘',cat:'snacks',   tag:'best',rating:4.7,reviews:7800},
+  {id:7,  name:'Amul Taaza Toned Milk',         brand:'Amul',      weight:'1 L',   price:28, mrp:30, img:'🥛',cat:'dairy',    tag:'',   rating:4.5,reviews:9200},
+  {id:8,  name:'Amul Butter Salted',            brand:'Amul',      weight:'500 g', price:245,mrp:270,img:'🧈',cat:'dairy',    tag:'sale',rating:4.8,reviews:4500},
+  {id:9,  name:'Amul Mozzarella Cheese',        brand:'Amul',      weight:'200 g', price:115,mrp:130,img:'🧀',cat:'dairy',    tag:'new',rating:4.4,reviews:2300},
+  {id:10, name:'Mother Dairy Fresh Curd',       brand:'Mother Dairy',weight:'400 g',price:42,mrp:45, img:'🫙',cat:'dairy',    tag:'',   rating:4.6,reviews:6700},
+  {id:11, name:'Fortune Refined Sunflower Oil', brand:'Fortune',   weight:'5 L',   price:620,mrp:720,img:'🫙',cat:'grocery',  tag:'sale',rating:4.4,reviews:3400},
+  {id:12, name:'Tata Salt Vacuum Evaporated',   brand:'Tata',      weight:'1 kg',  price:22, mrp:24, img:'🧂',cat:'grocery',  tag:'',   rating:4.7,reviews:12000},
+  {id:13, name:'India Gate Basmati Rice Classic',brand:'KRBL',     weight:'5 kg',  price:499,mrp:599,img:'🍚',cat:'grocery',  tag:'sale',rating:4.8,reviews:8900},
+  {id:14, name:'Tata Tea Gold Premium',         brand:'Tata',      weight:'500 g', price:249,mrp:290,img:'🍵',cat:'beverages',tag:'best',rating:4.7,reviews:15000},
+  {id:15, name:'Fresh Robusta Bananas',         brand:'Farm Fresh',weight:'12 pcs',price:45, mrp:55, img:'🍌',cat:'fruits',   tag:'new',rating:4.5,reviews:2200},
+  {id:16, name:'Hybrid Tomatoes',               brand:'Local Farm',weight:'500 g', price:28, mrp:35, img:'🍅',cat:'fruits',   tag:'',   rating:4.3,reviews:3100},
+  {id:17, name:'Organic Spinach (Palak)',        brand:'Organic Farms',weight:'250 g',price:18,mrp:22,img:'🥬',cat:'fruits',  tag:'new',rating:4.6,reviews:1800},
+  {id:18, name:'Red Onions Farm Fresh',         brand:'Local Farm',weight:'1 kg',  price:35, mrp:45, img:'🧅',cat:'fruits',   tag:'',   rating:4.2,reviews:4500},
+  {id:19, name:'Dove Body Lotion Moisturising', brand:'Unilever',  weight:'400 ml',price:285,mrp:320,img:'🧴',cat:'personal', tag:'sale',rating:4.6,reviews:5600},
+  {id:20, name:'Head & Shoulders Anti Dandruff',brand:'P&G',       weight:'340 ml',price:279,mrp:320,img:'🧴',cat:'personal', tag:'',   rating:4.5,reviews:7800},
+  {id:21, name:'Baby Essentials Combo Kit',     brand:'Various',   weight:'Combo', price:499,mrp:699,img:'👶',cat:'baby',     tag:'hot',rating:4.7,reviews:1200},
+  {id:22, name:'Britannia Good Day Cashew',     brand:'Britannia', weight:'600 g', price:85, mrp:100,img:'🍪',cat:'bakery',   tag:'best',rating:4.6,reviews:9800},
+  {id:23, name:'Modern White Sandwich Bread',   brand:'Modern',    weight:'400 g', price:45, mrp:50, img:'🍞',cat:'bakery',   tag:'',   rating:4.3,reviews:6700},
+  {id:24, name:'Coca-Cola Can Multipack',       brand:'Coca-Cola', weight:'6×300 ml',price:149,mrp:180,img:'🥤',cat:'beverages',tag:'hot',rating:4.5,reviews:11000},
+  {id:25, name:'Paper Boat Aamras',             brand:'Paperboat', weight:'200 ml',price:35, mrp:40, img:'🧃',cat:'beverages',tag:'new',rating:4.8,reviews:4300},
+  {id:26, name:'Maggi 2-Minute Noodles Family', brand:'Nestlé',    weight:'12×70 g',price:145,mrp:168,img:'🍜',cat:'instant', tag:'best',rating:4.7,reviews:25000},
+  {id:27, name:'MTR Dal Makhani Ready to Eat',  brand:'MTR',       weight:'300 g', price:89, mrp:110,img:'🫕',cat:'instant',  tag:'hot',rating:4.6,reviews:3400},
+  {id:28, name:'Surf Excel Easy Wash',          brand:'HUL',       weight:'3 kg',  price:295,mrp:360,img:'🧺',cat:'cleaning', tag:'sale',rating:4.5,reviews:8900},
+  {id:29, name:'Harpic Power Plus',             brand:'Harpic',    weight:'1 L',   price:110,mrp:130,img:'🧹',cat:'cleaning', tag:'',   rating:4.4,reviews:5600},
+  {id:30, name:'McCain Smiles Frozen Snacks',   brand:'McCain',    weight:'415 g', price:155,mrp:185,img:'❄️',cat:'frozen',   tag:'new',rating:4.3,reviews:2100},
+];
+
+const NOTIFICATIONS = [
+  {id:1, icon:'🎉', title:'Order Delivered!', msg:'Your last order was delivered successfully.', time:'2 min ago', unread:true},
+  {id:2, icon:'🏷️', title:'New Offer Available', msg:'Get ₹100 off on orders above ₹699. Use PALTAN100', time:'1 hr ago', unread:true},
+  {id:3, icon:'🚀', title:'Flash Sale Starting!', msg:'50% off on dairy products for next 2 hours.', time:'3 hrs ago', unread:false},
+  {id:4, icon:'📦', title:'Order Shipped', msg:'Your order #4521 is out for delivery.', time:'Yesterday', unread:false},
+];
+
+const TAG_STYLE = {new:'tag-new',hot:'tag-hot',sale:'tag-sale',best:'tag-best'};
+const TAG_LABEL = {new:'✨ New',hot:'🔥 Hot',sale:'💸 Sale',best:'⭐ Best'};
+
+/* ════ ICONS ════ */
+const Ic = ({d,size=20,cls='',stroke='currentColor',fill='none',sw=1.8}) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className={cls}>
+    <path d={d}/>
+  </svg>
+);
+const icons = {
+  search:"M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z",
+  x:"M18 6L6 18M6 6l12 12",
+  pin:"M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z",
+  bell:"M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0",
+  cart:"M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0",
+  user:"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
+  chevD:"M6 9l6 6 6-6",
+  chevR:"M9 18l6-6-6-6",
+  micro:"M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8",
+  logout:"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9",
+  orders:"M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2",
+  heart:"M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
+  star:"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
+  check:"M20 6L9 17l-5-5",
+  eye:"M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z",
+  eyeOff:"M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22",
+};
+
+/* ════ STARS ════ */
+function Stars({r}) {
+  return <span style={{display:'flex',alignItems:'center',gap:3}}>
+    <svg width={11} height={11} viewBox="0 0 24 24" fill="#fbbf24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    <span style={{fontSize:11,fontWeight:600,color:'#6b7280'}}>{r}</span>
+  </span>;
+}
+
+/* ════ PRODUCT CARD ════ */
+function ProductCard({p, qty, onUpdate}) {
+  const disc = p.mrp > p.price ? Math.round((1-p.price/p.mrp)*100) : 0;
+  return (
+    <div className="pcard">
+      <div className="pcard-img" style={{height:130,display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
+        <span style={{fontSize:58}}>{p.img}</span>
+        {p.tag && <span className={`tag ${TAG_STYLE[p.tag]}`} style={{position:'absolute',top:10,left:10}}>{TAG_LABEL[p.tag]}</span>}
+        {disc>0 && <span className="disc" style={{position:'absolute',top:10,right:10}}>-{disc}%</span>}
+      </div>
+      <div style={{padding:'14px',display:'flex',flexDirection:'column',flex:1}}>
+        <div style={{fontSize:11,color:'#9ca3af',fontWeight:600,marginBottom:2}}>{p.brand}</div>
+        <div style={{fontSize:13,fontWeight:700,color:'#111827',lineHeight:1.35,marginBottom:4,display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden',flex:1}}>{p.name}</div>
+        <div style={{fontSize:11,color:'#9ca3af',marginBottom:6}}>{p.weight}</div>
+        <Stars r={p.rating}/>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:10}}>
+          <div>
+            <span style={{fontSize:16,fontWeight:800,color:'#111827'}}>₹{p.price}</span>
+            {disc>0 && <span style={{fontSize:11,color:'#9ca3af',textDecoration:'line-through',marginLeft:6}}>₹{p.mrp}</span>}
+          </div>
+          {qty===0
+            ? <button className="add-btn" style={{padding:'6px 14px'}} onClick={()=>{onUpdate(p.id,1);showToast(`${p.name.split(' ')[0]} added to kart`)}}>+ Add</button>
+            : <div className="qty-box"><button className="qty-btn" onClick={()=>onUpdate(p.id,-1)}>−</button><span className="qty-num">{qty}</span><button className="qty-btn" onClick={()=>onUpdate(p.id,1)}>+</button></div>
+          }
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ════ OFFER CARD ════ */
+function OfferCard({o, i}) {
+  const [copied, setCopied] = React.useState(false);
+  return (
+    <div className="offer-card fu" style={{background:o.bg,borderColor:o.border,padding:'20px',animationDelay:`${i*.07}s`}}>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
+        <span style={{fontSize:26}}>{o.icon}</span>
+        <span style={{fontSize:9,fontWeight:800,padding:'3px 8px',borderRadius:100,background:o.border,color:o.accent}}>LIMITED</span>
+      </div>
+      <div className="font-syne" style={{fontSize:22,fontWeight:800,color:o.accent,marginBottom:2}}>{o.title}</div>
+      <div style={{fontSize:12,color:'#6b7280',marginBottom:14}}>{o.sub}</div>
+      <button onClick={()=>{setCopied(true);showToast(`Code "${o.code}" copied! 🎉`);setTimeout(()=>setCopied(false),3000);}} style={{width:'100%',padding:'9px',border:`2px dashed ${o.accent}`,borderRadius:10,background:'rgba(255,255,255,.7)',color:o.accent,fontSize:12,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer',transition:'all .2s'}} onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,.95)'} onMouseLeave={e=>e.currentTarget.style.background='rgba(255,255,255,.7)'}>
+        {copied ? '✓ Copied!' : `USE: ${o.code}`}
+      </button>
+    </div>
+  );
+}
+
+/* ════ SECTION HEADER ════ */
+function SecHead({title,sub,onAll}) {
+  return (
+    <div style={{display:'flex',alignItems:'flex-end',justifyContent:'space-between',marginBottom:20}}>
+      <div>
+        <h2 className="sec-line font-syne" style={{fontSize:20,fontWeight:700,color:'#111827'}}>{title}</h2>
+        {sub && <p style={{fontSize:13,color:'#6b7280',marginTop:4}}>{sub}</p>}
+      </div>
+      {onAll && <button onClick={onAll} style={{fontSize:13,fontWeight:700,color:'#16a34a',cursor:'pointer',background:'none',border:'none',fontFamily:'DM Sans',display:'flex',alignItems:'center',gap:4}}>
+        See all <Ic d={icons.chevR} size={14}/>
+      </button>}
+    </div>
+  );
+}
+
+/* ════ LOGIN MODAL ════ */
+function LoginModal({onClose, onLogin}) {
+  const [tab, setTab] = useState('login');
+  const [form, setForm] = useState({name:'',email:'',phone:'',password:''});
+  const [showPw, setShowPw] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const set = k => e => setForm(f=>({...f,[k]:e.target.value}));
+
+  const submit = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      onLogin({name: form.name || form.email.split('@')[0] || 'User', email: form.email, phone: form.phone});
+      onClose();
+      showToast(tab==='login' ? 'Welcome back! 👋' : 'Account created successfully! 🎉');
+    }, 1200);
+  };
+
+  const inputStyle = {width:'100%',padding:'12px 16px',border:'1.5px solid #e5e7eb',borderRadius:12,fontSize:14,fontFamily:'DM Sans',outline:'none',transition:'border-color .2s',background:'#f9fafb'};
+
+  return (
+    <div className="modal-bg" onClick={e=>{if(e.target===e.currentTarget)onClose()}}>
+      <div className="modal fu">
+        {/* Header */}
+        <div style={{background:'linear-gradient(135deg,#052e16,#15803d)',padding:'32px 32px 28px',position:'relative'}}>
+          <button onClick={onClose} style={{position:'absolute',top:16,right:16,width:32,height:32,borderRadius:'50%',background:'rgba(255,255,255,.15)',border:'none',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff'}}>
+            <Ic d={icons.x} size={16}/>
+          </button>
+          <div style={{fontSize:32,marginBottom:8}}>🌿</div>
+          <div className="font-syne" style={{color:'#fff',fontSize:22,fontWeight:700}}>Welcome to Paltan</div>
+          <div style={{color:'rgba(255,255,255,.7)',fontSize:13,marginTop:4}}>Aurangabad's fastest grocery delivery</div>
+          {/* Tabs */}
+          <div style={{display:'flex',gap:4,marginTop:20,background:'rgba(0,0,0,.2)',borderRadius:12,padding:4}}>
+            {['login','register'].map(t=>(
+              <button key={t} onClick={()=>setTab(t)} style={{flex:1,padding:'8px',borderRadius:9,border:'none',cursor:'pointer',fontSize:13,fontWeight:700,fontFamily:'DM Sans',background:tab===t?'#fff':'transparent',color:tab===t?'#16a34a':'rgba(255,255,255,.7)',transition:'all .2s'}}>
+                {t==='login' ? 'Login' : 'Sign Up'}
+              </button>
+            ))}
+          </div>
+        </div>
+        {/* Form */}
+        <div style={{padding:'28px 32px 32px'}}>
+          <div style={{display:'flex',flexDirection:'column',gap:14}}>
+            {tab==='register' && <input style={inputStyle} placeholder="Full Name" value={form.name} onChange={set('name')} onFocus={e=>e.target.style.borderColor='#16a34a'} onBlur={e=>e.target.style.borderColor='#e5e7eb'}/>}
+            <input style={inputStyle} placeholder="Email address" type="email" value={form.email} onChange={set('email')} onFocus={e=>e.target.style.borderColor='#16a34a'} onBlur={e=>e.target.style.borderColor='#e5e7eb'}/>
+            {tab==='register' && <input style={inputStyle} placeholder="Phone number" type="tel" value={form.phone} onChange={set('phone')} onFocus={e=>e.target.style.borderColor='#16a34a'} onBlur={e=>e.target.style.borderColor='#e5e7eb'}/>}
+            <div style={{position:'relative'}}>
+              <input style={{...inputStyle,paddingRight:44}} placeholder="Password" type={showPw?'text':'password'} value={form.password} onChange={set('password')} onFocus={e=>e.target.style.borderColor='#16a34a'} onBlur={e=>e.target.style.borderColor='#e5e7eb'}/>
+              <button onClick={()=>setShowPw(s=>!s)} style={{position:'absolute',right:14,top:'50%',transform:'translateY(-50%)',background:'none',border:'none',cursor:'pointer',color:'#9ca3af'}}>
+                <Ic d={showPw?icons.eyeOff:icons.eye} size={16}/>
+              </button>
+            </div>
+            {tab==='login' && <div style={{textAlign:'right'}}><span style={{fontSize:13,color:'#16a34a',fontWeight:600,cursor:'pointer'}}>Forgot password?</span></div>}
+            <button onClick={submit} disabled={loading} style={{width:'100%',padding:'13px',background:loading?'#86efac':'#16a34a',color:'#fff',border:'none',borderRadius:12,fontSize:15,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer',transition:'all .2s',boxShadow:'0 6px 20px rgba(22,163,74,.35)'}}>
+              {loading ? '⏳ Please wait...' : tab==='login' ? 'Login to Paltan' : 'Create Account'}
+            </button>
+          </div>
+          <div style={{marginTop:20,textAlign:'center',fontSize:13,color:'#6b7280'}}>
+            {tab==='login' ? "Don't have an account? " : "Already have an account? "}
+            <span style={{color:'#16a34a',fontWeight:700,cursor:'pointer'}} onClick={()=>setTab(tab==='login'?'register':'login')}>
+              {tab==='login' ? 'Sign Up' : 'Login'}
+            </span>
+          </div>
+          <div style={{marginTop:20,position:'relative',textAlign:'center'}}>
+            <div style={{height:1,background:'#e5e7eb',position:'absolute',top:'50%',left:0,right:0}}></div>
+            <span style={{background:'#fff',padding:'0 12px',fontSize:12,color:'#9ca3af',position:'relative'}}>or continue with</span>
+          </div>
+          <div style={{display:'flex',gap:12,marginTop:16}}>
+            {['🇬 Google','📱 Phone OTP'].map(s=>(
+              <button key={s} style={{flex:1,padding:'10px',border:'1.5px solid #e5e7eb',borderRadius:12,background:'#f9fafb',fontSize:13,fontWeight:600,fontFamily:'DM Sans',cursor:'pointer',transition:'all .2s'}}
+                onMouseEnter={e=>e.target.style.borderColor='#16a34a'} onMouseLeave={e=>e.target.style.borderColor='#e5e7eb'}>
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ════ CART DRAWER ════ */
+function CartDrawer({open, onClose, cart, onUpdate, user, onLoginRequest}) {
+  const items = useMemo(() => PRODUCTS.filter(p=>cart[p.id]>0), [cart]);
+  const total = items.reduce((s,p)=>s+p.price*(cart[p.id]||0),0);
+  const saved = items.reduce((s,p)=>s+(p.mrp-p.price)*(cart[p.id]||0),0);
+  const count = items.reduce((s,p)=>s+(cart[p.id]||0),0);
+  const [coupon, setCoupon] = useState('');
+  const [couponApplied, setCouponApplied] = useState(false);
+  const discount = couponApplied ? Math.round(total*0.1) : 0;
+
+  return (
+    <>
+      <div className={`drawer-overlay ${open?'open':''}`} onClick={onClose}/>
+      <div className={`drawer ${open?'open':''}`}>
+        {/* Header */}
+        <div style={{padding:'20px 24px',borderBottom:'1px solid #f3f4f6',display:'flex',alignItems:'center',justifyContent:'space-between',flexShrink:0}}>
+          <div>
+            <div className="font-syne" style={{fontSize:18,fontWeight:700,color:'#111827'}}>Your Kart 🛒</div>
+            <div style={{fontSize:12,color:'#6b7280',marginTop:2}}>{count} item{count!==1?'s':''} · ₹{total-discount} payable</div>
+          </div>
+          <button onClick={onClose} style={{width:36,height:36,borderRadius:'50%',background:'#f3f4f6',border:'none',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}} onMouseEnter={e=>e.currentTarget.style.background='#e5e7eb'} onMouseLeave={e=>e.currentTarget.style.background='#f3f4f6'}>
+            <Ic d={icons.x} size={16}/>
+          </button>
+        </div>
+
+        {items.length===0 ? (
+          <div style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:32,textAlign:'center'}}>
+            <span style={{fontSize:72,marginBottom:16}}>🛒</span>
+            <div className="font-syne" style={{fontSize:18,fontWeight:700,color:'#374151',marginBottom:8}}>Your kart is empty</div>
+            <div style={{fontSize:13,color:'#9ca3af',marginBottom:24}}>Add items from the store to start shopping</div>
+            <button onClick={onClose} style={{background:'#16a34a',color:'#fff',border:'none',borderRadius:12,padding:'12px 28px',fontSize:14,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer'}}>Browse Products</button>
+          </div>
+        ) : (
+          <>
+            {/* Delivery strip */}
+            <div style={{margin:'16px 24px 0',background:'#f0fdf4',borderRadius:12,padding:'10px 14px',display:'flex',alignItems:'center',gap:10,border:'1px solid #bbf7d0'}}>
+              <span style={{fontSize:18}}>⚡</span>
+              <div>
+                <div style={{fontSize:13,fontWeight:700,color:'#15803d'}}>Delivery in ~10 minutes</div>
+                <div style={{fontSize:11,color:'#16a34a'}}>Express delivery · Aurangabad</div>
+              </div>
+            </div>
+            {/* Items */}
+            <div style={{flex:1,overflowY:'auto',padding:'16px 24px'}}>
+              {items.map(p=>(
+                <div key={p.id} style={{display:'flex',alignItems:'center',gap:14,paddingBottom:16,marginBottom:16,borderBottom:'1px solid #f9fafb'}}>
+                  <div style={{width:56,height:56,background:'#f3f4f6',borderRadius:14,display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>{p.img}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:13,fontWeight:600,color:'#111827',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.name}</div>
+                    <div style={{fontSize:11,color:'#9ca3af'}}>{p.weight}</div>
+                    <div style={{fontSize:14,fontWeight:800,color:'#16a34a',marginTop:2}}>₹{p.price}
+                      {p.mrp>p.price&&<span style={{fontSize:11,color:'#9ca3af',textDecoration:'line-through',fontWeight:400,marginLeft:6}}>₹{p.mrp}</span>}
+                    </div>
+                  </div>
+                  <div className="qty-box" style={{flexShrink:0}}>
+                    <button className="qty-btn" onClick={()=>onUpdate(p.id,-1)}>−</button>
+                    <span className="qty-num">{cart[p.id]}</span>
+                    <button className="qty-btn" onClick={()=>onUpdate(p.id,1)}>+</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Coupon */}
+            <div style={{padding:'0 24px 16px'}}>
+              <div className="coupon-box" style={{display:'flex',alignItems:'center',gap:10,padding:'10px 14px'}}>
+                <span style={{fontSize:16}}>🏷️</span>
+                <input value={coupon} onChange={e=>setCoupon(e.target.value)} placeholder="Enter coupon code" style={{flex:1,background:'none',border:'none',outline:'none',fontSize:13,fontFamily:'DM Sans',color:'#374151'}}/>
+                <button onClick={()=>{if(coupon.toUpperCase()==='PALTAN100'){setCouponApplied(true);showToast('Coupon applied! ₹'+Math.round(total*0.1)+' off 🎉');}else showToast('Invalid coupon code');}} style={{background:'#16a34a',color:'#fff',border:'none',borderRadius:8,padding:'6px 12px',fontSize:12,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer'}}>
+                  {couponApplied ? '✓' : 'Apply'}
+                </button>
+              </div>
+            </div>
+            {/* Bill */}
+            <div style={{padding:'0 24px',borderTop:'1px solid #f3f4f6',paddingTop:16}}>
+              {[['Subtotal',`₹${total}`],['Delivery','FREE'],saved>0?['You save 🎉',`−₹${saved}`]:null,couponApplied?['Coupon PALTAN100',`−₹${discount}`]:null,['Total to pay',`₹${total-discount}`]].filter(Boolean).map(([k,v],i,arr)=>(
+                <div key={k} style={{display:'flex',justifyContent:'space-between',marginBottom:10,fontSize:i===arr.length-1?15:13,fontWeight:i===arr.length-1?800:400,color:k.includes('save')||k.includes('Coupon')?'#16a34a':i===arr.length-1?'#111827':'#6b7280',paddingTop:i===arr.length-1?10:0,borderTop:i===arr.length-1?'1px solid #e5e7eb':0}}>
+                  <span>{k}</span><span>{v}</span>
+                </div>
+              ))}
+            </div>
+            {/* Checkout */}
+            <div style={{padding:'16px 24px 24px'}}>
+              <button onClick={()=>{if(!user){onClose();onLoginRequest();}else showToast('Proceeding to checkout...');}} style={{width:'100%',padding:'14px',background:'linear-gradient(135deg,#15803d,#22c55e)',color:'#fff',border:'none',borderRadius:14,fontSize:15,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer',boxShadow:'0 8px 24px rgba(22,163,74,.35)',display:'flex',alignItems:'center',justifyContent:'space-between',paddingLeft:20,paddingRight:20}}>
+                <span>{user ? 'Proceed to Checkout' : 'Login to Checkout'}</span>
+                <span>₹{total-discount} →</span>
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </>
+  );
+}
+
+/* ════ MAIN APP ════ */
+function App() {
+  const [cart, setCart] = useState({});
+  const [user, setUser] = useState(null);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const [activeCat, setActiveCat] = useState('all');
+  const [location, setLocation] = useState('Station Road, 431001');
+  const [showLoc, setShowLoc] = useState(false);
+  const [showNotif, setShowNotif] = useState(false);
+  const [showProf, setShowProf] = useState(false);
+  const [notifs, setNotifs] = useState(NOTIFICATIONS);
+  const [wishlist, setWishlist] = useState({});
+  const [showSugg, setShowSugg] = useState(false);
+  const searchRef = useRef();
+
+  const cartCount = useMemo(() => Object.values(cart).reduce((s,q)=>s+q,0), [cart]);
+  const cartTotal = useMemo(() => PRODUCTS.filter(p=>cart[p.id]).reduce((s,p)=>s+p.price*(cart[p.id]||0),0), [cart]);
+  const unread = notifs.filter(n=>n.unread).length;
+
+  const updateCart = useCallback((id,delta) => {
+    setCart(prev => {
+      const q = (prev[id]||0) + delta;
+      if (q<=0) { const n={...prev}; delete n[id]; return n; }
+      return {...prev,[id]:q};
+    });
+  },[]);
+
+  const filtered = useMemo(() => PRODUCTS.filter(p => {
+    const mc = activeCat==='all' || p.cat===activeCat;
+    const ms = !search || p.name.toLowerCase().includes(search.toLowerCase()) || p.brand.toLowerCase().includes(search.toLowerCase());
+    return mc && ms;
+  }), [activeCat, search]);
+
+  const suggestions = useMemo(() => search.length>1 ? PRODUCTS.filter(p=>p.name.toLowerCase().includes(search.toLowerCase())||p.brand.toLowerCase().includes(search.toLowerCase())).slice(0,5) : [], [search]);
+
+  // close dropdowns on outside click
+  useEffect(() => {
+    const h = ()=>{ setShowLoc(false); setShowNotif(false); setShowProf(false); setShowSugg(false); };
+    document.addEventListener('click', h);
+    return ()=>document.removeEventListener('click',h);
+  },[]);
+
+  const logout = () => { setUser(null); setShowProf(false); showToast('Logged out successfully'); };
+
+  return (
+    <div style={{minHeight:'100vh',background:'#f9fafb'}}>
+
+      {/* ── Announcement bar ── */}
+      <div className="announce-bar" style={{padding:'8px 0',textAlign:'center'}}>
+        <span style={{color:'#fff',fontSize:13,fontWeight:600,letterSpacing:'0.05em'}}>
+          ⚡ Free delivery on orders above ₹299 · Use <strong>PALTAN100</strong> for ₹100 off · New users get 3 free deliveries!
+        </span>
+      </div>
+
+      {/* ── Navbar ── */}
+      <nav className="navbar">
+        <div style={{maxWidth:1320,margin:'0 auto',padding:'0 24px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:16,padding:'14px 0'}}>
+
+            {/* Logo */}
+            <div style={{display:'flex',alignItems:'center',gap:10,flexShrink:0,cursor:'pointer'}} onClick={()=>{setActiveCat('all');setSearch('');}}>
+              <div style={{width:38,height:38,background:'linear-gradient(135deg,#15803d,#22c55e)',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,boxShadow:'0 4px 12px rgba(22,163,74,.3)'}}>🌿</div>
+              <div>
+                <div className="font-syne" style={{fontSize:22,fontWeight:800,color:'#15803d',lineHeight:1}}>Paltan</div>
+                <div style={{fontSize:9,letterSpacing:'0.25em',color:'#9ca3af',fontWeight:600,textTransform:'uppercase'}}>Shopping Mall</div>
+              </div>
+            </div>
+
+            {/* Location picker */}
+            <div style={{position:'relative'}} onClick={e=>e.stopPropagation()}>
+              <button onClick={()=>{setShowLoc(s=>!s);setShowNotif(false);setShowProf(false);}} style={{display:'flex',alignItems:'center',gap:8,border:'1.5px solid #e5e7eb',borderRadius:12,padding:'9px 14px',background:'#fff',cursor:'pointer',transition:'all .2s',fontFamily:'DM Sans'}} onMouseEnter={e=>e.currentTarget.style.borderColor='#16a34a'} onMouseLeave={e=>{ if(!showLoc) e.currentTarget.style.borderColor='#e5e7eb'}}>
+                <Ic d={icons.pin} size={14} cls="" stroke="#16a34a" fill="#16a34a"/>
+                <div style={{textAlign:'left'}}>
+                  <div style={{fontSize:9,color:'#9ca3af',fontWeight:600,textTransform:'uppercase',letterSpacing:'0.05em'}}>Deliver to</div>
+                  <div style={{fontSize:12,fontWeight:700,color:'#111827',maxWidth:140,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{location}</div>
+                </div>
+                <Ic d={icons.chevD} size={14} stroke="#9ca3af"/>
+              </button>
+              {showLoc && (
+                <div className="loc-drop">
+                  <div style={{padding:'14px 16px 8px',borderBottom:'1px solid #f3f4f6'}}>
+                    <div className="font-syne" style={{fontSize:13,fontWeight:700,color:'#374151'}}>Select Delivery Location</div>
+                    <div style={{fontSize:12,color:'#9ca3af'}}>Aurangabad, Maharashtra</div>
+                  </div>
+                  {LOCATIONS.map(l=>(
+                    <button key={l} onClick={()=>{setLocation(l);setShowLoc(false);}} style={{width:'100%',textAlign:'left',padding:'11px 16px',background:'none',border:'none',cursor:'pointer',fontSize:13,fontFamily:'DM Sans',color:location===l?'#16a34a':'#374151',fontWeight:location===l?700:400,display:'flex',alignItems:'center',gap:10,transition:'background .15s'}} onMouseEnter={e=>e.currentTarget.style.background='#f9fafb'} onMouseLeave={e=>e.currentTarget.style.background='none'}>
+                      <Ic d={icons.pin} size={12} stroke={location===l?'#16a34a':'#9ca3af'} fill={location===l?'#16a34a':'none'}/>
+                      {l}
+                      {location===l && <Ic d={icons.check} size={12} stroke="#16a34a" cls="ml-auto"/>}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Search */}
+            <div style={{flex:1,position:'relative'}} onClick={e=>e.stopPropagation()}>
+              <div className="search-box" style={{display:'flex',alignItems:'center',gap:10,padding:'11px 16px'}}>
+                <Ic d={icons.search} size={18} stroke="#9ca3af"/>
+                <input ref={searchRef} className="search-input" style={{flex:1,background:'none',border:'none',outline:'none',fontSize:14,fontFamily:'DM Sans',color:'#111827'}} placeholder='Search "milk", "atta", "maggi", "chips"...' value={search} onChange={e=>{setSearch(e.target.value);setShowSugg(true);}} onFocus={()=>setShowSugg(true)}/>
+                {search && <button onClick={()=>{setSearch('');setShowSugg(false);}} style={{background:'none',border:'none',cursor:'pointer',color:'#9ca3af'}}><Ic d={icons.x} size={14}/></button>}
+                <button style={{background:'#16a34a',color:'#fff',border:'none',borderRadius:10,padding:'7px 16px',fontSize:13,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer'}}>Search</button>
+              </div>
+              {/* Suggestions */}
+              {showSugg && suggestions.length>0 && (
+                <div className="suggestions">
+                  {suggestions.map(p=>(
+                    <div key={p.id} className="sugg-item" onClick={()=>{setSearch(p.name);setShowSugg(false);}} style={{display:'flex',alignItems:'center',gap:12,padding:'10px 16px',cursor:'pointer',transition:'background .15s'}}>
+                      <span style={{fontSize:22}}>{p.img}</span>
+                      <div>
+                        <div style={{fontSize:13,fontWeight:600,color:'#111827'}}>{p.name}</div>
+                        <div style={{fontSize:11,color:'#9ca3af'}}>{p.brand} · {p.weight} · ₹{p.price}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Right icons */}
+            <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
+              {/* Notifications */}
+              <div style={{position:'relative'}} onClick={e=>e.stopPropagation()}>
+                <button onClick={()=>{setShowNotif(s=>!s);setShowLoc(false);setShowProf(false);if(unread)setNotifs(n=>n.map(x=>({...x,unread:false})));}} style={{width:42,height:42,borderRadius:12,border:'1.5px solid #e5e7eb',background:'#fff',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}} onMouseEnter={e=>e.currentTarget.style.borderColor='#16a34a'} onMouseLeave={e=>{ if(!showNotif) e.currentTarget.style.borderColor='#e5e7eb'}}>
+                  <Ic d={icons.bell} size={18}/>
+                  {unread>0 && <span style={{position:'absolute',top:-5,right:-5,background:'#ef4444',color:'#fff',fontSize:9,fontWeight:800,minWidth:16,height:16,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',padding:'0 3px'}}>{unread}</span>}
+                </button>
+                {showNotif && (
+                  <div className="notif-panel">
+                    <div style={{padding:'14px 16px 10px',borderBottom:'1px solid #f3f4f6',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                      <div className="font-syne" style={{fontSize:14,fontWeight:700}}>Notifications</div>
+                      <span style={{fontSize:11,color:'#16a34a',fontWeight:600,cursor:'pointer'}}>Mark all read</span>
+                    </div>
+                    {notifs.map(n=>(
+                      <div key={n.id} style={{padding:'12px 16px',borderBottom:'1px solid #f9fafb',background:n.unread?'#f0fdf4':'#fff',display:'flex',gap:12,alignItems:'flex-start'}}>
+                        <span style={{fontSize:22,flexShrink:0}}>{n.icon}</span>
+                        <div style={{flex:1}}>
+                          <div style={{fontSize:13,fontWeight:700,color:'#111827'}}>{n.title}</div>
+                          <div style={{fontSize:12,color:'#6b7280',marginTop:2,lineHeight:1.4}}>{n.msg}</div>
+                          <div style={{fontSize:10,color:'#9ca3af',marginTop:4}}>{n.time}</div>
+                        </div>
+                        {n.unread && <div style={{width:7,height:7,borderRadius:'50%',background:'#16a34a',flexShrink:0,marginTop:4}}></div>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Cart */}
+              <button onClick={()=>{setCartOpen(true);}} style={{display:'flex',alignItems:'center',gap:10,background:'linear-gradient(135deg,#15803d,#22c55e)',color:'#fff',border:'none',borderRadius:14,padding:'10px 18px',cursor:'pointer',position:'relative',boxShadow:'0 4px 14px rgba(22,163,74,.35)',transition:'all .2s',fontFamily:'DM Sans'}} onMouseEnter={e=>e.currentTarget.style.boxShadow='0 8px 24px rgba(22,163,74,.45)'} onMouseLeave={e=>e.currentTarget.style.boxShadow='0 4px 14px rgba(22,163,74,.35)'}>
+                <Ic d={icons.cart} size={18} stroke="#fff"/>
+                <div style={{textAlign:'left'}}>
+                  <div style={{fontSize:9,fontWeight:600,opacity:.8,letterSpacing:'0.05em'}}>MY KART</div>
+                  <div style={{fontSize:14,fontWeight:800}}>{cartCount>0?`₹${cartTotal}`:'Empty'}</div>
+                </div>
+                {cartCount>0 && <span style={{position:'absolute',top:-7,right:-7,background:'#fbbf24',color:'#111',fontSize:10,fontWeight:800,minWidth:20,height:20,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center'}}>{cartCount}</span>}
+              </button>
+
+              {/* Profile */}
+              <div style={{position:'relative'}} onClick={e=>e.stopPropagation()}>
+                <button onClick={()=>{setShowProf(s=>!s);setShowLoc(false);setShowNotif(false);}} style={{display:'flex',alignItems:'center',gap:8,border:'1.5px solid #e5e7eb',borderRadius:12,padding:'8px 12px',background:'#fff',cursor:'pointer',transition:'all .2s',fontFamily:'DM Sans'}} onMouseEnter={e=>e.currentTarget.style.borderColor='#16a34a'} onMouseLeave={e=>{ if(!showProf) e.currentTarget.style.borderColor='#e5e7eb'}}>
+                  {user ? (
+                    <div style={{width:28,height:28,borderRadius:'50%',background:'linear-gradient(135deg,#15803d,#22c55e)',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontSize:13,fontWeight:700}}>
+                      {user.name[0].toUpperCase()}
+                    </div>
+                  ) : <Ic d={icons.user} size={18}/>}
+                  <div style={{textAlign:'left'}}>
+                    <div style={{fontSize:9,color:'#9ca3af',fontWeight:600,textTransform:'uppercase',letterSpacing:'0.05em'}}>{user?'Account':'Profile'}</div>
+                    <div style={{fontSize:12,fontWeight:700,color:'#111827'}}>{user?user.name.split(' ')[0]:'Login'}</div>
+                  </div>
+                  <Ic d={icons.chevD} size={12} stroke="#9ca3af"/>
+                </button>
+                {showProf && (
+                  <div className="prof-drop">
+                    {user ? (
+                      <>
+                        <div style={{padding:'14px 16px',borderBottom:'1px solid #f3f4f6',background:'#f0fdf4'}}>
+                          <div style={{fontSize:14,fontWeight:700,color:'#15803d'}}>{user.name}</div>
+                          <div style={{fontSize:12,color:'#6b7280'}}>{user.email}</div>
+                        </div>
+                        {[['📦','My Orders',icons.orders],['❤️','Wishlist',icons.heart],['📍','Saved Addresses',icons.pin],['🏷️','Coupons & Offers',icons.check]].map(([emoji,label])=>(
+                          <button key={label} style={{width:'100%',display:'flex',alignItems:'center',gap:10,padding:'11px 16px',background:'none',border:'none',cursor:'pointer',fontSize:13,fontFamily:'DM Sans',color:'#374151',transition:'background .15s'}} onMouseEnter={e=>e.currentTarget.style.background='#f9fafb'} onMouseLeave={e=>e.currentTarget.style.background='none'}>
+                            <span>{emoji}</span>{label}
+                          </button>
+                        ))}
+                        <div style={{borderTop:'1px solid #f3f4f6'}}>
+                          <button onClick={logout} style={{width:'100%',display:'flex',alignItems:'center',gap:10,padding:'11px 16px',background:'none',border:'none',cursor:'pointer',fontSize:13,fontFamily:'DM Sans',color:'#ef4444',fontWeight:600}}>
+                            <Ic d={icons.logout} size={14} stroke="#ef4444"/> Sign Out
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div style={{padding:16}}>
+                          <p style={{fontSize:13,color:'#6b7280',marginBottom:12}}>Sign in to access orders, wishlist & exclusive offers.</p>
+                          <button onClick={()=>{setShowProf(false);setLoginOpen(true);}} style={{width:'100%',background:'#16a34a',color:'#fff',border:'none',borderRadius:10,padding:'10px',fontSize:13,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer'}}>Login / Sign Up</button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Category pills */}
+          <div className="cat-scroll" style={{borderTop:'1px solid #f3f4f6',paddingBottom:12,paddingTop:12,display:'flex',gap:10}}>
+            {CATEGORIES.map(c=>(
+              <button key={c.id} className={`cpill ${activeCat===c.id?'active':''}`} style={{padding:'7px 16px',display:'flex',alignItems:'center',gap:6}} onClick={()=>{setActiveCat(c.id);setSearch('');}}>
+                <span>{c.icon}</span>{c.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      {/* ── Main ── */}
+      <main style={{maxWidth:1320,margin:'0 auto',padding:'32px 24px 64px'}}>
+
+        {/* Search results */}
+        {search ? (
+          <div className="fu">
+            <SecHead title={`Results for "${search}"`} sub={`${filtered.length} products found`}/>
+            {filtered.length===0 ? (
+              <div style={{textAlign:'center',padding:'80px 0'}}>
+                <span style={{fontSize:72}}>🔍</span>
+                <div className="font-syne" style={{fontSize:22,fontWeight:700,color:'#374151',marginTop:16}}>No results found</div>
+                <div style={{color:'#9ca3af',marginTop:8}}>Try searching for "milk", "rice", "atta", "biscuit"...</div>
+                <button onClick={()=>setSearch('')} style={{marginTop:20,background:'#16a34a',color:'#fff',border:'none',borderRadius:12,padding:'12px 28px',fontSize:14,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer'}}>Clear Search</button>
+              </div>
+            ) : (
+              <div className="pgrid">{filtered.map(p=><ProductCard key={p.id} p={p} qty={cart[p.id]||0} onUpdate={updateCart}/>)}</div>
+            )}
+          </div>
+        ) : activeCat!=='all' ? (
+          // Category filtered view
+          <div>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:24}}>
+              <div>
+                <h2 className="font-syne sec-line" style={{fontSize:24,fontWeight:700}}>{CATEGORIES.find(c=>c.id===activeCat)?.icon} {CATEGORIES.find(c=>c.id===activeCat)?.label}</h2>
+                <p style={{fontSize:13,color:'#6b7280',marginTop:4}}>{filtered.length} products available</p>
+              </div>
+              <button onClick={()=>setActiveCat('all')} style={{display:'flex',alignItems:'center',gap:6,fontSize:13,color:'#6b7280',background:'#f3f4f6',border:'none',borderRadius:10,padding:'8px 14px',cursor:'pointer',fontFamily:'DM Sans',fontWeight:600}}>
+                <Ic d={icons.x} size={14}/> Clear
+              </button>
+            </div>
+            <div className="pgrid">{filtered.map(p=><ProductCard key={p.id} p={p} qty={cart[p.id]||0} onUpdate={updateCart}/>)}</div>
+          </div>
+        ) : (
+          // Home page
+          <>
+            {/* ── HERO ── */}
+            <div className="hero-section hero-dots" style={{borderRadius:28,marginBottom:32,padding:'56px 64px'}}>
+              <div style={{position:'relative',zIndex:2,display:'flex',alignItems:'center',justifyContent:'space-between',gap:32}}>
+                <div style={{maxWidth:560}}>
+                  <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(255,255,255,.12)',border:'1px solid rgba(255,255,255,.2)',borderRadius:100,padding:'8px 18px',marginBottom:24}}>
+                    <span className="pdot" style={{width:8,height:8,background:'#4ade80',borderRadius:'50%',display:'inline-block'}}></span>
+                    <span style={{color:'#fff',fontSize:13,fontWeight:600}}>Delivering across Aurangabad in ~10 min</span>
+                  </div>
+                  <h1 className="font-serif" style={{color:'#fff',fontSize:56,lineHeight:1.1,marginBottom:16}}>
+                    Fresh Groceries,<br/><em style={{color:'#4ade80',textShadow:'0 0 20px rgba(74,222,128,0.3)'}}>At Your Door</em>
+                  </h1>
+                  <p style={{color:'rgba(255,255,255,.75)',fontSize:16,marginBottom:32,lineHeight:1.6}}>
+                    Order from 5000+ products — atta, rice, snacks, dairy, fruits & daily essentials. Paltan delivers faster than ever.
+                  </p>
+                  <div style={{display:'flex',gap:14,flexWrap:'wrap'}}>
+                    <button onClick={()=>searchRef.current?.focus()} style={{background:'rgba(255,255,255,0.95)',backdropFilter:'blur(8px)',color:'#15803d',border:'none',borderRadius:14,padding:'14px 28px',fontSize:15,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer',boxShadow:'0 8px 32px rgba(0,0,0,0.2)',transition:'all 0.3s'}} onMouseEnter={e=>e.currentTarget.style.transform='translateY(-2px)'} onMouseLeave={e=>e.currentTarget.style.transform='none'}>
+                      🔍 Search Products
+                    </button>
+                    <div style={{display:'flex',gap:10}}>
+                      <span style={{background:'rgba(254,240,138,0.9)',backdropFilter:'blur(8px)',color:'#713f12',borderRadius:100,padding:'14px 18px',fontSize:14,fontWeight:700,boxShadow:'0 4px 12px rgba(0,0,0,0.1)'}}>🏷️ ₹100 off above ₹699</span>
+                      <span style={{background:'rgba(255,255,255,.1)',backdropFilter:'blur(8px)',color:'#fff',borderRadius:100,padding:'14px 18px',fontSize:14,fontWeight:600,border:'1px solid rgba(255,255,255,.2)',boxShadow:'0 4px 12px rgba(0,0,0,0.1)'}}>🚀 Free delivery</span>
+                    </div>
+                  </div>
+                </div>
+                <div style={{fontSize:130,opacity:.9,filter:'drop-shadow(0 20px 40px rgba(0,0,0,.3))',flexShrink:0,display:'none'}}>🛒</div>
+              </div>
+              {/* Stats */}
+              <div style={{position:'relative',zIndex:2,display:'flex',gap:0,marginTop:40,borderTop:'1px solid rgba(255,255,255,.12)',paddingTop:28}}>
+                {[['5000+','Products'],['~10 min','Delivery Time'],['₹299','Free delivery above'],['24/7','Customer Support']].map(([n,l],i)=>(
+                  <div key={l} style={{flex:1,paddingRight:24,borderRight:i<3?'1px solid rgba(255,255,255,.12)':'0',paddingLeft:i>0?24:0}}>
+                    <div className="font-syne" style={{color:'#86efac',fontSize:28,fontWeight:800}}>{n}</div>
+                    <div style={{color:'rgba(255,255,255,.6)',fontSize:13,marginTop:3}}>{l}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ── Offer bar ── */}
+            <div style={{background:'linear-gradient(90deg,#fef3c7,#fde68a)',border:'1px solid #fbbf24',borderRadius:16,padding:'14px 24px',marginBottom:32,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+              <div style={{display:'flex',alignItems:'center',gap:12}}>
+                <span style={{fontSize:24}}>🏷️</span>
+                <div>
+                  <span style={{fontSize:15,fontWeight:700,color:'#92400e'}}>₹100 off on orders above ₹699</span>
+                  <span style={{fontSize:13,color:'#78350f',marginLeft:8}}>· Use code <strong>PALTAN100</strong> at checkout</span>
+                </div>
+              </div>
+              <button onClick={()=>{setCartOpen(true);showToast('Add items worth ₹699+ to apply offer');}} style={{background:'#d97706',color:'#fff',border:'none',borderRadius:10,padding:'8px 20px',fontSize:13,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer'}}>Grab Offer →</button>
+            </div>
+
+            {/* ── 4 Offer cards ── */}
+            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:40}}>
+              {[
+                {bg:'#fefce8',border:'#fde68a',accent:'#92400e',icon:'🏷️',title:'₹100 OFF',sub:'Orders above ₹699',code:'PALTAN100'},
+                {bg:'#fdf4ff',border:'#e9d5ff',accent:'#6b21a8',icon:'🚀',title:'Free Delivery',sub:'First 3 orders free',code:'FREEDEL3'},
+                {bg:'#eff6ff',border:'#bfdbfe',accent:'#1e40af',icon:'💰',title:'15% Cashback',sub:'On all UPI payments',code:'UPI15CB'},
+                {bg:'#f0fdf4',border:'#bbf7d0',accent:'#14532d',icon:'🥛',title:'Buy 2 Get 1',sub:'All dairy products',code:'DAIRY3'},
+              ].map((o,i)=>(
+                <OfferCard key={i} o={o} i={i} />
+              ))}
+            </div>
+
+            {/* ── Promo banners ── */}
+            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginBottom:48}}>
+              {[
+                {title:'Daily Essentials',sub:'Atta, Rice, Oil & more',bg:'linear-gradient(135deg,#052e16,#15803d)',emoji:'🧺',cat:'grocery'},
+                {title:'Fresh Fruits & Vegs',sub:'Farm-fresh, every day',bg:'linear-gradient(135deg,#78350f,#d97706)',emoji:'🥦',cat:'fruits'},
+                {title:'Snack Attack!',sub:'Chips, bhujia & namkeen',bg:'linear-gradient(135deg,#1e1b4b,#4f46e5)',emoji:'🍿',cat:'snacks'},
+              ].map((b,i)=>(
+                <div key={i} className="promo-card fu" style={{background:b.bg,padding:'28px',cursor:'pointer',animationDelay:`${i*.08}s`}} onClick={()=>setActiveCat(b.cat)}>
+                  <span style={{fontSize:52}}>{b.emoji}</span>
+                  <div className="font-syne" style={{color:'#fff',fontSize:20,fontWeight:700,marginTop:12}}>{b.title}</div>
+                  <div style={{color:'rgba(255,255,255,.65)',fontSize:13,marginTop:4,marginBottom:16}}>{b.sub}</div>
+                  <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(255,255,255,.15)',border:'1px solid rgba(255,255,255,.25)',borderRadius:100,padding:'7px 16px',color:'#fff',fontSize:13,fontWeight:600}}>
+                    Shop Now <Ic d={icons.chevR} size={14} stroke="#fff"/>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* ── Snacks & Drinks ── */}
+            <div style={{marginBottom:48}}>
+              <SecHead title="Snacks & Drinks" sub="India's favourite munchies & beverages" onAll={()=>setActiveCat('snacks')}/>
+              <div className="pgrid">{PRODUCTS.filter(p=>p.cat==='snacks').map(p=><ProductCard key={p.id} p={p} qty={cart[p.id]||0} onUpdate={updateCart}/>)}</div>
+            </div>
+
+            {/* ── Mid banner ── */}
+            <div style={{background:'linear-gradient(135deg,#1e1b4b,#312e81)',borderRadius:24,padding:'32px 40px',marginBottom:48,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+              <div>
+                <div style={{fontSize:11,fontWeight:700,letterSpacing:'0.15em',color:'#a5b4fc',textTransform:'uppercase',marginBottom:8}}>Daily Must-Haves</div>
+                <div className="font-serif" style={{color:'#fff',fontSize:36,marginBottom:8}}>Never Run Out Again</div>
+                <div style={{color:'rgba(255,255,255,.65)',fontSize:14,marginBottom:20}}>Stock up on atta, rice, dal, oil & household essentials</div>
+                <button onClick={()=>setActiveCat('grocery')} style={{background:'#fff',color:'#312e81',border:'none',borderRadius:12,padding:'12px 28px',fontSize:14,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer'}}>Shop Grocery →</button>
+              </div>
+              <span style={{fontSize:100,opacity:.85}}>🧺</span>
+            </div>
+
+            {/* ── Grocery & Home ── */}
+            <div style={{marginBottom:48}}>
+              <SecHead title="Grocery & Home" sub="Stocking up made effortless" onAll={()=>setActiveCat('grocery')}/>
+              <div className="pgrid">{PRODUCTS.filter(p=>p.cat==='grocery').map(p=><ProductCard key={p.id} p={p} qty={cart[p.id]||0} onUpdate={updateCart}/>)}</div>
+            </div>
+
+            {/* ── Dairy ── */}
+            <div style={{marginBottom:48}}>
+              <SecHead title="Dairy & Eggs" sub="Farm-fresh, delivered every morning" onAll={()=>setActiveCat('dairy')}/>
+              <div className="pgrid">{PRODUCTS.filter(p=>p.cat==='dairy').map(p=><ProductCard key={p.id} p={p} qty={cart[p.id]||0} onUpdate={updateCart}/>)}</div>
+            </div>
+
+            {/* ── Fruits banner ── */}
+            <div style={{background:'linear-gradient(135deg,#78350f,#b45309)',borderRadius:24,padding:'32px 40px',marginBottom:48,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+              <div>
+                <div style={{fontSize:11,fontWeight:700,letterSpacing:'0.15em',color:'#fde68a',textTransform:'uppercase',marginBottom:8}}>100% Fresh</div>
+                <div className="font-serif" style={{color:'#fff',fontSize:36,marginBottom:8}}>Fruits & Vegetables</div>
+                <div style={{color:'rgba(255,255,255,.65)',fontSize:14,marginBottom:20}}>Farm-fresh produce delivered to your doorstep daily</div>
+                <button onClick={()=>setActiveCat('fruits')} style={{background:'#fef3c7',color:'#78350f',border:'none',borderRadius:12,padding:'12px 28px',fontSize:14,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer'}}>Explore Fresh Produce →</button>
+              </div>
+              <span style={{fontSize:100,opacity:.9}}>🥦</span>
+            </div>
+
+            {/* ── Fruits ── */}
+            <div style={{marginBottom:48}}>
+              <SecHead title="Fruits & Vegetables" sub="100% fresh, sourced daily from local farms" onAll={()=>setActiveCat('fruits')}/>
+              <div className="pgrid">{PRODUCTS.filter(p=>p.cat==='fruits').map(p=><ProductCard key={p.id} p={p} qty={cart[p.id]||0} onUpdate={updateCart}/>)}</div>
+            </div>
+
+            {/* ── Beverages ── */}
+            <div style={{marginBottom:48}}>
+              <SecHead title="Beverages" sub="From chai to cold drinks — every sip sorted" onAll={()=>setActiveCat('beverages')}/>
+              <div className="pgrid">{PRODUCTS.filter(p=>p.cat==='beverages').map(p=><ProductCard key={p.id} p={p} qty={cart[p.id]||0} onUpdate={updateCart}/>)}</div>
+            </div>
+
+            {/* ── Instant food ── */}
+            <div style={{marginBottom:48}}>
+              <SecHead title="Instant & Ready to Eat" sub="Quick meals for busy days" onAll={()=>setActiveCat('instant')}/>
+              <div className="pgrid">{PRODUCTS.filter(p=>p.cat==='instant').map(p=><ProductCard key={p.id} p={p} qty={cart[p.id]||0} onUpdate={updateCart}/>)}</div>
+            </div>
+
+            {/* ── Bakery ── */}
+            <div style={{marginBottom:48}}>
+              <SecHead title="Bakery & Biscuits" sub="Fresh bakes and crunchy treats" onAll={()=>setActiveCat('bakery')}/>
+              <div className="pgrid">{PRODUCTS.filter(p=>p.cat==='bakery').map(p=><ProductCard key={p.id} p={p} qty={cart[p.id]||0} onUpdate={updateCart}/>)}</div>
+            </div>
+
+            {/* ── Personal Care ── */}
+            <div style={{marginBottom:48}}>
+              <SecHead title="Personal Care" sub="Look good, feel great" onAll={()=>setActiveCat('personal')}/>
+              <div className="pgrid">{PRODUCTS.filter(p=>p.cat==='personal').map(p=><ProductCard key={p.id} p={p} qty={cart[p.id]||0} onUpdate={updateCart}/>)}</div>
+            </div>
+
+            {/* ── Cleaning ── */}
+            <div style={{marginBottom:48}}>
+              <SecHead title="Cleaning & Household" sub="Keep your home spotless" onAll={()=>setActiveCat('cleaning')}/>
+              <div className="pgrid">{PRODUCTS.filter(p=>p.cat==='cleaning').map(p=><ProductCard key={p.id} p={p} qty={cart[p.id]||0} onUpdate={updateCart}/>)}</div>
+            </div>
+          </>
+        )}
+      </main>
+
+      {/* ── Footer ── */}
+      <footer className="footer-bg">
+        <div style={{maxWidth:1320,margin:'0 auto',padding:'56px 24px 32px'}}>
+          <div style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr',gap:40,marginBottom:40}}>
+            <div>
+              <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:16}}>
+                <div style={{width:36,height:36,background:'linear-gradient(135deg,#15803d,#22c55e)',borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',fontSize:18}}>🌿</div>
+                <div>
+                  <div className="font-syne" style={{fontSize:20,fontWeight:800,color:'#22c55e',lineHeight:1}}>Paltan</div>
+                  <div style={{fontSize:9,letterSpacing:'0.25em',color:'#4b5563',fontWeight:600,textTransform:'uppercase'}}>Shopping Mall</div>
+                </div>
+              </div>
+              <p style={{color:'#6b7280',fontSize:13,lineHeight:1.7,maxWidth:280}}>Aurangabad's fastest grocery delivery service. Order fresh groceries, snacks, dairy and household essentials from the comfort of your home.</p>
+              <div style={{display:'flex',gap:10,marginTop:20}}>
+                {['📞 +91 240 XXX XXXX','📧 hello@paltanshoppingmall.in'].map(c=>(
+                  <span key={c} style={{fontSize:12,color:'#4b5563',fontWeight:500}}>{c}</span>
+                ))}
+              </div>
+            </div>
+            {[
+              {title:'Quick Links',links:['Home','All Categories','Today\'s Offers','Track Order','Help & Support']},
+              {title:'Categories',links:['Snacks & Drinks','Grocery & Home','Dairy & Eggs','Fruits & Vegs','Personal Care']},
+              {title:'Company',links:['About Paltan','Careers','Privacy Policy','Terms of Service','Partner with Us']},
+            ].map(col=>(
+              <div key={col.title}>
+                <div className="font-syne" style={{fontSize:12,fontWeight:700,color:'#22c55e',letterSpacing:'0.15em',textTransform:'uppercase',marginBottom:16}}>{col.title}</div>
+                {col.links.map(l=>(
+                  <div key={l} style={{marginBottom:10}}><a href="#" style={{color:'#6b7280',fontSize:13,textDecoration:'none',transition:'color .15s'}} onMouseEnter={e=>e.target.style.color='#22c55e'} onMouseLeave={e=>e.target.style.color='#6b7280'}>{l}</a></div>
+                ))}
+              </div>
+            ))}
+          </div>
+          <div style={{borderTop:'1px solid #1f2937',paddingTop:24,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+            <p style={{color:'#4b5563',fontSize:12}}>© 2026 Paltan Shopping Mall, Aurangabad. All rights reserved.</p>
+            <p style={{color:'#4b5563',fontSize:12}}>Made with ❤️ in Marathwada · paltanshoppingmall.in</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* ── Modals & Drawers ── */}
+      <CartDrawer open={cartOpen} onClose={()=>setCartOpen(false)} cart={cart} onUpdate={updateCart} user={user} onLoginRequest={()=>setLoginOpen(true)}/>
+      {loginOpen && <LoginModal onClose={()=>setLoginOpen(false)} onLogin={setUser}/>}
+
+      {/* ── Floating cart bar (shows when items in cart) ── */}
+      {cartCount>0 && !cartOpen && (
+        <div style={{position:'fixed',bottom:24,left:'50%',transform:'translateX(-50%)',zIndex:80}}>
+          <button onClick={()=>setCartOpen(true)} className="float-cart" style={{display:'flex',alignItems:'center',gap:16,background:'linear-gradient(135deg,#15803d,#22c55e)',color:'#fff',border:'none',borderRadius:20,padding:'14px 28px',cursor:'pointer',boxShadow:'0 12px 40px rgba(22,163,74,.5)',fontFamily:'DM Sans',transition:'all .3s'}} onMouseEnter={e=>e.currentTarget.style.transform='scale(1.03)'} onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}>
+            <div style={{background:'rgba(255,255,255,.2)',borderRadius:12,padding:'5px 12px'}}>
+              <span style={{fontWeight:800,fontSize:14}}>{cartCount} items</span>
+            </div>
+            <span style={{fontWeight:700,fontSize:15}}>View Kart</span>
+            <span style={{fontWeight:800,fontSize:15}}>₹{cartTotal} →</span>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
