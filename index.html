@@ -123,6 +123,93 @@ body{font-family:'DM Sans',sans-serif;background:#f9fafb;color:#111827;-webkit-f
 @media(max-width:900px){.pgrid{grid-template-columns:repeat(2,1fr);gap:12px}}
 @media(max-width:500px){.pgrid{grid-template-columns:repeat(2,1fr);gap:10px}}
 
+/* Responsive tweaks */
+@media(max-width:900px){
+  nav.navbar{position:sticky;top:0}
+  main{padding-left:16px !important;padding-right:16px !important}
+}
+@media(max-width:1024px){
+  .nav-row{flex-wrap:wrap;gap:12px}
+  .nav-logo{flex:1 1 auto}
+  .nav-loc{order:3}
+  .nav-search{order:4;flex:1 1 100%}
+  .nav-actions{order:5;width:100%;justify-content:space-between}
+  .hero-content{flex-direction:column;align-items:flex-start}
+  .hero-stats{gap:16px;flex-wrap:wrap}
+  .hero-stats > div{flex:1 1 45%;border-right:0 !important;padding-right:0 !important}
+  .offer-grid{grid-template-columns:repeat(2,1fr) !important}
+  .promo-grid{grid-template-columns:repeat(2,1fr) !important}
+  .footer-grid{grid-template-columns:1.5fr 1fr 1fr !important}
+}
+@media(max-width:768px){
+  .nav-row{gap:10px}
+  .nav-actions{flex-wrap:wrap}
+  .nav-actions > button{flex:1}
+  .nav-actions .cart-btn{flex:1 1 100%}
+  .hero-title{font-size:42px !important}
+  .hero-sub{font-size:15px !important}
+  .hero-cta{flex-direction:column;align-items:flex-start}
+  .hero-cta .hero-badges{flex-direction:row;flex-wrap:wrap}
+  .hero-stats > div{flex:1 1 50%}
+  .offer-grid{grid-template-columns:1fr 1fr !important}
+  .promo-grid{grid-template-columns:1fr 1fr !important}
+  .wide-banner{flex-direction:column;gap:18px}
+  .wide-banner span{font-size:80px !important}
+  .footer-grid{grid-template-columns:1fr 1fr !important;gap:24px !important}
+}
+@media(max-width:640px){
+  /* make hero padding smaller */
+  .hero-section{padding:24px !important}
+  /* keep top actions readable */
+  .navbar > div > div{gap:10px}
+    .nav-actions{gap:6px}
+    .nav-actions > button{flex:1}
+    .nav-actions .cart-btn{flex:1 1 100%;justify-content:center}
+    .hero-title{font-size:36px !important}
+    .hero-sub{font-size:14px !important}
+    .hero-cta{flex-direction:column;align-items:flex-start}
+    .hero-cta .hero-badges{flex-direction:column;align-items:flex-start}
+    .offer-grid{grid-template-columns:1fr !important}
+    .promo-grid{grid-template-columns:1fr !important}
+    .wide-banner{flex-direction:column;gap:18px}
+    .wide-banner span{font-size:72px !important}
+    .footer-grid{grid-template-columns:1fr !important;gap:24px !important}
+    .footer-bottom{flex-direction:column;gap:10px;align-items:flex-start !important}
+}
+@media(max-width:414px){
+  .hero-section{border-radius:20px}
+  .hero-title{font-size:30px !important}
+  .hero-sub{font-size:13px !important}
+  .hero-stats{gap:12px;padding-top:20px}
+  .hero-stats > div{flex:1 1 100%;padding-left:0 !important}
+  .offer-grid{gap:12px !important}
+  .promo-grid{gap:12px !important}
+  .pgrid{gap:10px}
+  .pcard{border-radius:16px}
+  .pcard-img{height:120px !important}
+  .add-btn{padding:6px 10px}
+}
+@media(max-width:420px){
+  .cpill{font-size:12px}
+  .search-box{padding:10px 12px}
+  .drawer{width:100%;max-width:420px}
+  .notif-panel{width:calc(100vw - 24px)}
+  .prof-drop{width:200px}
+    .nav-loc{width:100%}
+    .nav-loc button{width:100%}
+    .nav-actions{flex-wrap:wrap}
+}
+@media(max-width:360px){
+  .hero-title{font-size:26px !important}
+  .hero-sub{font-size:12px !important}
+  .hero-section{padding:18px !important}
+  .search-box{padding:8px 10px}
+  .cpill{padding:6px 12px}
+  .pcard{border-radius:14px}
+  .pcard-img{height:110px !important}
+  .drawer{padding-bottom:8px}
+}
+
 /* Toast */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#111827;color:#fff;padding:12px 24px;border-radius:100px;font-size:14px;font-weight:600;z-index:999;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s;opacity:0}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
@@ -534,10 +621,10 @@ function App() {
       {/* ── Navbar ── */}
       <nav className="navbar">
         <div style={{maxWidth:1320,margin:'0 auto',padding:'0 24px'}}>
-          <div style={{display:'flex',alignItems:'center',gap:16,padding:'14px 0'}}>
+          <div className="nav-row" style={{display:'flex',alignItems:'center',gap:16,padding:'14px 0'}}>
 
             {/* Logo */}
-            <div style={{display:'flex',alignItems:'center',gap:10,flexShrink:0,cursor:'pointer'}} onClick={()=>{setActiveCat('all');setSearch('');}}>
+            <div className="nav-logo" style={{display:'flex',alignItems:'center',gap:10,flexShrink:0,cursor:'pointer'}} onClick={()=>{setActiveCat('all');setSearch('');}}>
               <div style={{width:38,height:38,background:'linear-gradient(135deg,#15803d,#22c55e)',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,boxShadow:'0 4px 12px rgba(22,163,74,.3)'}}>🌿</div>
               <div>
                 <div className="font-syne" style={{fontSize:22,fontWeight:800,color:'#15803d',lineHeight:1}}>Paltan</div>
@@ -546,7 +633,7 @@ function App() {
             </div>
 
             {/* Location picker */}
-            <div style={{position:'relative'}} onClick={e=>e.stopPropagation()}>
+            <div className="nav-loc" style={{position:'relative'}} onClick={e=>e.stopPropagation()}>
               <button onClick={()=>{setShowLoc(s=>!s);setShowNotif(false);setShowProf(false);}} style={{display:'flex',alignItems:'center',gap:8,border:'1.5px solid #e5e7eb',borderRadius:12,padding:'9px 14px',background:'#fff',cursor:'pointer',transition:'all .2s',fontFamily:'DM Sans'}} onMouseEnter={e=>e.currentTarget.style.borderColor='#16a34a'} onMouseLeave={e=>{ if(!showLoc) e.currentTarget.style.borderColor='#e5e7eb'}}>
                 <Ic d={icons.pin} size={14} cls="" stroke="#16a34a" fill="#16a34a"/>
                 <div style={{textAlign:'left'}}>
@@ -573,7 +660,7 @@ function App() {
             </div>
 
             {/* Search */}
-            <div style={{flex:1,position:'relative'}} onClick={e=>e.stopPropagation()}>
+            <div className="nav-search" style={{flex:1,position:'relative'}} onClick={e=>e.stopPropagation()}>
               <div className="search-box" style={{display:'flex',alignItems:'center',gap:10,padding:'11px 16px'}}>
                 <Ic d={icons.search} size={18} stroke="#9ca3af"/>
                 <input ref={searchRef} className="search-input" style={{flex:1,background:'none',border:'none',outline:'none',fontSize:14,fontFamily:'DM Sans',color:'#111827'}} placeholder='Search "milk", "atta", "maggi", "chips"...' value={search} onChange={e=>{setSearch(e.target.value);setShowSugg(true);}} onFocus={()=>setShowSugg(true)}/>
@@ -597,7 +684,7 @@ function App() {
             </div>
 
             {/* Right icons */}
-            <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
+            <div className="nav-actions" style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
               {/* Notifications */}
               <div style={{position:'relative'}} onClick={e=>e.stopPropagation()}>
                 <button onClick={()=>{setShowNotif(s=>!s);setShowLoc(false);setShowProf(false);if(unread)setNotifs(n=>n.map(x=>({...x,unread:false})));}} style={{width:42,height:42,borderRadius:12,border:'1.5px solid #e5e7eb',background:'#fff',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}} onMouseEnter={e=>e.currentTarget.style.borderColor='#16a34a'} onMouseLeave={e=>{ if(!showNotif) e.currentTarget.style.borderColor='#e5e7eb'}}>
@@ -626,7 +713,7 @@ function App() {
               </div>
 
               {/* Cart */}
-              <button onClick={()=>{setCartOpen(true);}} style={{display:'flex',alignItems:'center',gap:10,background:'linear-gradient(135deg,#15803d,#22c55e)',color:'#fff',border:'none',borderRadius:14,padding:'10px 18px',cursor:'pointer',position:'relative',boxShadow:'0 4px 14px rgba(22,163,74,.35)',transition:'all .2s',fontFamily:'DM Sans'}} onMouseEnter={e=>e.currentTarget.style.boxShadow='0 8px 24px rgba(22,163,74,.45)'} onMouseLeave={e=>e.currentTarget.style.boxShadow='0 4px 14px rgba(22,163,74,.35)'}>
+              <button className="cart-btn" onClick={()=>{setCartOpen(true);}} style={{display:'flex',alignItems:'center',gap:10,background:'linear-gradient(135deg,#15803d,#22c55e)',color:'#fff',border:'none',borderRadius:14,padding:'10px 18px',cursor:'pointer',position:'relative',boxShadow:'0 4px 14px rgba(22,163,74,.35)',transition:'all .2s',fontFamily:'DM Sans'}} onMouseEnter={e=>e.currentTarget.style.boxShadow='0 8px 24px rgba(22,163,74,.45)'} onMouseLeave={e=>e.currentTarget.style.boxShadow='0 4px 14px rgba(22,163,74,.35)'}>
                 <Ic d={icons.cart} size={18} stroke="#fff"/>
                 <div style={{textAlign:'left'}}>
                   <div style={{fontSize:9,fontWeight:600,opacity:.8,letterSpacing:'0.05em'}}>MY KART</div>
@@ -730,23 +817,23 @@ function App() {
           <>
             {/* ── HERO ── */}
             <div className="hero-section hero-dots" style={{borderRadius:28,marginBottom:32,padding:'56px 64px'}}>
-              <div style={{position:'relative',zIndex:2,display:'flex',alignItems:'center',justifyContent:'space-between',gap:32}}>
+              <div className="hero-content" style={{position:'relative',zIndex:2,display:'flex',alignItems:'center',justifyContent:'space-between',gap:32}}>
                 <div style={{maxWidth:560}}>
                   <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(255,255,255,.12)',border:'1px solid rgba(255,255,255,.2)',borderRadius:100,padding:'8px 18px',marginBottom:24}}>
                     <span className="pdot" style={{width:8,height:8,background:'#4ade80',borderRadius:'50%',display:'inline-block'}}></span>
                     <span style={{color:'#fff',fontSize:13,fontWeight:600}}>Delivering across Aurangabad in ~10 min</span>
                   </div>
-                  <h1 className="font-serif" style={{color:'#fff',fontSize:56,lineHeight:1.1,marginBottom:16}}>
+                  <h1 className="font-serif hero-title" style={{color:'#fff',fontSize:56,lineHeight:1.1,marginBottom:16}}>
                     Fresh Groceries,<br/><em style={{color:'#4ade80',textShadow:'0 0 20px rgba(74,222,128,0.3)'}}>At Your Door</em>
                   </h1>
-                  <p style={{color:'rgba(255,255,255,.75)',fontSize:16,marginBottom:32,lineHeight:1.6}}>
+                  <p className="hero-sub" style={{color:'rgba(255,255,255,.75)',fontSize:16,marginBottom:32,lineHeight:1.6}}>
                     Order from 5000+ products — atta, rice, snacks, dairy, fruits & daily essentials. Paltan delivers faster than ever.
                   </p>
-                  <div style={{display:'flex',gap:14,flexWrap:'wrap'}}>
+                  <div className="hero-cta" style={{display:'flex',gap:14,flexWrap:'wrap'}}>
                     <button onClick={()=>searchRef.current?.focus()} style={{background:'rgba(255,255,255,0.95)',backdropFilter:'blur(8px)',color:'#15803d',border:'none',borderRadius:14,padding:'14px 28px',fontSize:15,fontWeight:700,fontFamily:'DM Sans',cursor:'pointer',boxShadow:'0 8px 32px rgba(0,0,0,0.2)',transition:'all 0.3s'}} onMouseEnter={e=>e.currentTarget.style.transform='translateY(-2px)'} onMouseLeave={e=>e.currentTarget.style.transform='none'}>
                       🔍 Search Products
                     </button>
-                    <div style={{display:'flex',gap:10}}>
+                    <div className="hero-badges" style={{display:'flex',gap:10}}>
                       <span style={{background:'rgba(254,240,138,0.9)',backdropFilter:'blur(8px)',color:'#713f12',borderRadius:100,padding:'14px 18px',fontSize:14,fontWeight:700,boxShadow:'0 4px 12px rgba(0,0,0,0.1)'}}>🏷️ ₹100 off above ₹699</span>
                       <span style={{background:'rgba(255,255,255,.1)',backdropFilter:'blur(8px)',color:'#fff',borderRadius:100,padding:'14px 18px',fontSize:14,fontWeight:600,border:'1px solid rgba(255,255,255,.2)',boxShadow:'0 4px 12px rgba(0,0,0,0.1)'}}>🚀 Free delivery</span>
                     </div>
@@ -755,7 +842,7 @@ function App() {
                 <div style={{fontSize:130,opacity:.9,filter:'drop-shadow(0 20px 40px rgba(0,0,0,.3))',flexShrink:0,display:'none'}}>🛒</div>
               </div>
               {/* Stats */}
-              <div style={{position:'relative',zIndex:2,display:'flex',gap:0,marginTop:40,borderTop:'1px solid rgba(255,255,255,.12)',paddingTop:28}}>
+              <div className="hero-stats" style={{position:'relative',zIndex:2,display:'flex',gap:0,marginTop:40,borderTop:'1px solid rgba(255,255,255,.12)',paddingTop:28}}>
                 {[['5000+','Products'],['~10 min','Delivery Time'],['₹299','Free delivery above'],['24/7','Customer Support']].map(([n,l],i)=>(
                   <div key={l} style={{flex:1,paddingRight:24,borderRight:i<3?'1px solid rgba(255,255,255,.12)':'0',paddingLeft:i>0?24:0}}>
                     <div className="font-syne" style={{color:'#86efac',fontSize:28,fontWeight:800}}>{n}</div>
@@ -778,7 +865,7 @@ function App() {
             </div>
 
             {/* ── 4 Offer cards ── */}
-            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:40}}>
+            <div className="offer-grid" style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:40}}>
               {[
                 {bg:'#fefce8',border:'#fde68a',accent:'#92400e',icon:'🏷️',title:'₹100 OFF',sub:'Orders above ₹699',code:'PALTAN100'},
                 {bg:'#fdf4ff',border:'#e9d5ff',accent:'#6b21a8',icon:'🚀',title:'Free Delivery',sub:'First 3 orders free',code:'FREEDEL3'},
@@ -790,7 +877,7 @@ function App() {
             </div>
 
             {/* ── Promo banners ── */}
-            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginBottom:48}}>
+            <div className="promo-grid" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginBottom:48}}>
               {[
                 {title:'Daily Essentials',sub:'Atta, Rice, Oil & more',bg:'linear-gradient(135deg,#052e16,#15803d)',emoji:'🧺',cat:'grocery'},
                 {title:'Fresh Fruits & Vegs',sub:'Farm-fresh, every day',bg:'linear-gradient(135deg,#78350f,#d97706)',emoji:'🥦',cat:'fruits'},
@@ -814,7 +901,7 @@ function App() {
             </div>
 
             {/* ── Mid banner ── */}
-            <div style={{background:'linear-gradient(135deg,#1e1b4b,#312e81)',borderRadius:24,padding:'32px 40px',marginBottom:48,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <div className="wide-banner" style={{background:'linear-gradient(135deg,#1e1b4b,#312e81)',borderRadius:24,padding:'32px 40px',marginBottom:48,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
               <div>
                 <div style={{fontSize:11,fontWeight:700,letterSpacing:'0.15em',color:'#a5b4fc',textTransform:'uppercase',marginBottom:8}}>Daily Must-Haves</div>
                 <div className="font-serif" style={{color:'#fff',fontSize:36,marginBottom:8}}>Never Run Out Again</div>
@@ -837,7 +924,7 @@ function App() {
             </div>
 
             {/* ── Fruits banner ── */}
-            <div style={{background:'linear-gradient(135deg,#78350f,#b45309)',borderRadius:24,padding:'32px 40px',marginBottom:48,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <div className="wide-banner" style={{background:'linear-gradient(135deg,#78350f,#b45309)',borderRadius:24,padding:'32px 40px',marginBottom:48,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
               <div>
                 <div style={{fontSize:11,fontWeight:700,letterSpacing:'0.15em',color:'#fde68a',textTransform:'uppercase',marginBottom:8}}>100% Fresh</div>
                 <div className="font-serif" style={{color:'#fff',fontSize:36,marginBottom:8}}>Fruits & Vegetables</div>
@@ -889,7 +976,7 @@ function App() {
       {/* ── Footer ── */}
       <footer className="footer-bg">
         <div style={{maxWidth:1320,margin:'0 auto',padding:'56px 24px 32px'}}>
-          <div style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr',gap:40,marginBottom:40}}>
+          <div className="footer-grid" style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr',gap:40,marginBottom:40}}>
             <div>
               <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:16}}>
                 <div style={{width:36,height:36,background:'linear-gradient(135deg,#15803d,#22c55e)',borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',fontSize:18}}>🌿</div>
@@ -918,7 +1005,7 @@ function App() {
               </div>
             ))}
           </div>
-          <div style={{borderTop:'1px solid #1f2937',paddingTop:24,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <div className="footer-bottom" style={{borderTop:'1px solid #1f2937',paddingTop:24,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
             <p style={{color:'#4b5563',fontSize:12}}>© 2026 Paltan Shopping Mall, Aurangabad. All rights reserved.</p>
             <p style={{color:'#4b5563',fontSize:12}}>Made with ❤️ in Marathwada · paltanshoppingmall.in</p>
           </div>
